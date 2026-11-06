@@ -1,0 +1,10 @@
+.share-selection { max-height: 260px; overflow: auto; padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
+.share-selection > strong { display: block; margin: 12px 0 8px; }
+.share-selection > div { margin: 8px 0; }
+.share-dialog .share-option { display: flex; align-items: flex-start; flex-direction: row; gap: 8px; margin: 8px 0; font-size: 13px; }
+.share-dialog .share-option input { flex: 0 0 auto; width: 16px; height: 16px; margin: 2px 0; }
+.share-preview { padding: 14px; border: 1px solid var(--border); border-radius: 8px; overflow-wrap: anywhere; }
+.share-preview ul { max-height: 180px; overflow: auto; padding-left: 20px; }
+.share-preview li { margin: 7px 0; }
+.share-preview small { display: block; opacity: .65; }
+.share-preview code { font-size: 11px; }

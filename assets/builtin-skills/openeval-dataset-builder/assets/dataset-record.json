@@ -1,0 +1,19 @@
+{
+  "example_only": true,
+  "dataset_id": "synthetic-set",
+  "snapshot_id": "synthetic-set:v1",
+  "case_id": "synthetic-case-2",
+  "source_locator": "synthetic://example/2",
+  "original_prompt": "将上一轮标题改为春日计划，其他内容保留。",
+  "rewritten_prompt": null,
+  "rewrite_reason": null,
+  "session_id": "synthetic-session",
+  "turn_index": 2,
+  "depends_on": [
+    "synthetic-case-1"
+  ],
+  "inputs": [],
+  "dependency_status": "not_provided",
+  "selection_reason": "示例仅说明依赖字段，非真实任务",
+  "reference_only": []
+}

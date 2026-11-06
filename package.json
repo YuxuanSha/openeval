@@ -1,0 +1,27 @@
+{
+  "name": "openeval",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Local evaluation workspace with CLI and stdio MCP access",
+  "bin": { "openeval": "bin/openeval.mjs" },
+  "files": ["bin/", "client/", "dist/", "assets/builtin-skills/", "web/dist/", "docs/cli-mcp.md", "docs/file-sharing.md", "npm-shrinkwrap.json", "LICENSE", "THIRD_PARTY_NOTICES.md", "LICENSES/", "web/third_party/opendesign/", "web/OPENDESIGN_REFERENCE.md"],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node --experimental-strip-types server/index.ts",
+    "start": "node scripts/local-service.mjs start",
+    "stop": "node scripts/local-service.mjs stop",
+    "status": "node scripts/local-service.mjs status",
+    "test": "node --experimental-strip-types --test tests/*.test.ts tests/interfaces.test.mjs",
+    "test:interfaces": "node --test tests/interfaces.test.mjs",
+    "test:package": "node scripts/verify-interface-package.mjs",
+    "build:server": "tsc -p tsconfig.package.json",
+    "prepack": "npm run build:server && node scripts/check-interface-package.mjs",
+    "package:local": "node --experimental-strip-types scripts/package-local.ts"
+  },
+  "license": "MIT",
+  "dependencies": { "@modelcontextprotocol/sdk": "1.32.2", "zod": "3.25.76", "zod-to-json-schema": "3.25.2" },
+  "devDependencies": { "typescript": "5.9.3", "@types/node": "24.10.0" }
+}

@@ -1,0 +1,14 @@
+{
+  "example_only": true,
+  "template_id": "synthetic-template",
+  "snapshot_id": "synthetic-template:v1",
+  "source_revision": null,
+  "sections": [],
+  "protected_regions": [],
+  "allowed_changes": [],
+  "case_layout": null,
+  "color_rules": [],
+  "required_format": null,
+  "source_read_status": "not_read",
+  "fallback_used": false
+}

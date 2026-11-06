@@ -1,0 +1,20 @@
+{
+  "example_only": true,
+  "analysis_id": "synthetic-analysis",
+  "source_run_ids": [
+    "synthetic-run"
+  ],
+  "mode": "single_batch",
+  "raw_scores_mutated": false,
+  "metric_dictionary": [],
+  "join": {
+    "keys": [],
+    "verified_unique": false,
+    "conflicts": []
+  },
+  "supplemental_findings": [],
+  "original_score_snapshot": null,
+  "recomputed_metrics": [],
+  "new_judgments_created": false,
+  "evidence_limits": []
+}

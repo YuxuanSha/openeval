@@ -1,0 +1,6 @@
+node_modules/
+.vite-cache/
+dist/
+dist-live/
+.env.local
+*.log

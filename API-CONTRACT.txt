@@ -1,0 +1,108 @@
+OpenEval API contract v0.2 — 2026-11-01
+Host: 127.0.0.1:4318. JSON unless noted. All entity IDs are opaque strings; timestamps ISO.
+Every write request requires same-origin browser; tests/CLI without Origin are local only.
+No API keys, runtime/provider selector, automatic page-load execution.
+
+GET /api/health -> {ok:true,version,dataDir,runtime:'codex'}
+GET /api/projects -> {projects:Project[]}
+POST /api/projects {name} -> Project
+GET /api/tasks?projectId=... -> {tasks:Task[]}
+POST /api/tasks {projectId,title?,intent?,requestId?} -> Task
+  Immediately persists a session titled 新任务; include it in recents even with no messages.
+  requestId makes creation idempotent. This creates no run and no inference.
+  Native Codex threadId is populated only on the first submitted message.
+GET /api/tasks/:id -> {task,messages,runs,contracts,artifacts,pendingRequests}
+PATCH /api/tasks/:id {title?} -> Task
+POST /api/tasks/:id/messages
+  {text,refs?:[{versionId,hash?,selector?}],intent?,model?,effort?,requestId}
+  -> 202 {message,contract,run}
+  requestId makes submission idempotent. User sends once, no plan approval step.
+  Missing material/conflict may return a waiting run with visible openQuestions.
+POST /api/runs/:id/cancel {} -> Run
+POST /api/runs/:id/retry {requestId,model?,effort?} -> 202 {run,contract}
+POST /api/requests/:id/respond {decision?,answers?} -> {ok:true}
+GET /api/tasks/:id/events?after=0 -> text/event-stream
+  event: event; data: RunEvent JSON; SSE id equals event.id
+  kinds: message, run.status, assistant.delta, progress, tool.started, tool.completed,
+         approval.requested, input.requested, contract, artifact, usage, error.
+  On reconnect use after/Last-Event-ID; events replay, execution never replays.
+  Terminal run.status is emitted only after artifacts and the assistant reply persist.
+  Cancel returns after finalization; partial files remain available.
+
+GET /api/resources?projectId=...&kind=standard&q=... -> {resources:ResourceVersion[]}
+  Lists latest by resource. Search is metadata/text search; never implicit invocation.
+GET /api/resources/:resourceId/versions -> {versions:ResourceVersion[]}
+GET /api/versions/:versionId -> ResourceVersion
+POST /api/resources {projectId,kind,title,text?,contentBase64?,fileName?,mime?,versionLabel?,metadata?}
+  -> ResourceVersion. At least text or file bytes. Original retained.
+POST /api/resources/:resourceId/versions {text?,contentBase64?,fileName?,mime?,versionLabel?,metadata?}
+  -> new immutable ResourceVersion; old reports and refs unchanged.
+POST /api/resources/import-link {projectId,kind,title?,url,versionLabel?}
+  -> ResourceVersion only if fetched successfully; otherwise non-2xx with error.
+POST /api/resources/:resourceId/import-link {url,title?,versionLabel?}
+  -> new immutable version of the existing resource only after successful fetch.
+GET /api/versions/:versionId/download -> original attachment
+GET /api/search?projectId=...&q=...&kind=... -> {resources:ResourceVersion[]}
+  Use for @ menu. Selected token freezes versionId/hash, display title + label/version.
+  dataset/artifact_batch/scoring_batch/analysis are distinct kinds, metadata keeps native rows,
+  IDs, units, denominator, exclusions. Server does not invent cross-products or rescore imports.
+
+GET /api/runtime -> {available,authenticated,authType?,version?,models:RuntimeModel[],catalogSource,error?}
+  unavailable is not demo mode; list may be diagnostic catalog when app-server blocked.
+GET /api/memories?projectId=... -> {memories:Memory[]}
+POST /api/memories {projectId?,scope,content,source} -> Memory
+PATCH /api/memories/:id {content?,active?} -> Memory (revision increments)
+DELETE /api/memories/:id -> {ok:true} (retracted, not injected again)
+GET /api/memories/:id/history -> {revisions:Memory[]}
+GET /api/skills?projectId=... -> {skills:ResourceVersion[]} (built-in + uploaded)
+  Upload via POST /api/resources kind=skill. Upload only stores; select via refs to invoke.
+  SKILL.md or ZIP is supported. ZIP is validated without executing code; relative files
+  are staged only when selected. Original archive bytes and immutable version retained.
+  Built-in skills are selected by task intent and tracked in contract.skillVersionIds.
+GET /api/artifacts/:id/download -> attachment
+GET /api/artifacts/:id/preview -> isolated preview/text (HTML CSP sandbox)
+GET /api/showcase -> {cases:[...]} (empty by default; private opt-in material only)
+GET /api/example-packs -> {packs:[...]} (empty unless OPENEVAL_PRIVATE_EXAMPLES=1)
+POST /api/example-packs/import {projectId,packId:'local-workflow-history'} -> {ok,projectId,executionPerformed:false}
+  Explicit import only. Default installation contains no personal historical data.
+
+Envelope for errors: {error:{code,message,details?}}. No success on failed fetch/model.
+Types: shared/contracts.ts. Frontend may expose additional fields without assuming them mandatory.
+
+
+GOAL MODE / EXECUTION EVENTS (2026-11-01 additive)
+GET /api/runtime adds goals:{supported:boolean,enabled:boolean,stage?:string}.
+POST /api/tasks/:id/messages may include goalMode:{objective:string,tokenBudget?:integer|null,deadlineSeconds?:integer|null,maxTurns?:integer|null,origin?:"user"|"automatic"}. Omit/null means normal one-turn behavior. Actual user selection uses user; orchestration selecting a goal uses automatic (default). Goal mode is visible in the stored contract and Run; it does not change reasoning effort.
+New goals have NO default token budget, deadline, or turn limit. Omitted bounds are null. Explicit legacy API bounds remain accepted: budget1000..200000,deadline30..900seconds,turns1..20. Budget is native noncached-input+output accounting at checkpoints, not a hard cost cap. Deadline/maxTurns are separate harness limits, not invented native RPC fields. CLI/MCP expose objective and origin without adding bounds; CLI wait timeouts only stop polling.
+Native durable goal starts paused, full user contract is sent once via turn/start, then goal becomes active; no second turn/start is sent for automatic continuation. Activation phase cannot finish the Run. Prior active goals pause BEFORE thread/resume. Cancel pauses goal then interrupts the actual current turn.
+SSE additions: goal.updated {goal,protocolMethod,threadId}; goal.limit {reason}; turn.started/turn.completed {threadId,turnId,turn,turnCount?}; thread.status {threadId,status}; request.resolved {...native safe fields}. Existing tool.started/completed and progress now carry protocolMethod/threadId/turnId/itemId where available. Hidden reasoning item content is not forwarded; common credential patterns are redacted before persistence.
+Run additions: goalMode,goalState,turnCount,stopReason?,validationStatus:"not_checked". Native goal complete is not independent acceptance passed. Goal status values:active,paused,blocked,usageLimited,budgetLimited,complete. Run ends after goal terminal AND actual turn ends; blocked -> waiting (explicit continuation), limits/paused -> interrupted, complete -> completed. Artifacts remain collected before terminal Run event.
+
+HARNESS-AWARE ARCHIVING (additive)
+Every CLI start/resume receives OpenEval identity, project/task/contract IDs, exact refs,
+and openeval-context.json with runId, allowed kinds, per-run output directory and manifest schema.
+Write outputs/<runId>/manifest.json: {artifacts:[{path,kind,title?,key?,resourceId?,baseVersionId?,versionLabel?,metadata?}]}.
+Paths are relative to the manifest directory (outputs/... is accepted explicitly). Traversal,
+symlinks, missing files, invalid kinds and duplicate paths are rejected with ARCHIVE_FAILED.
+Only evaluate tasks register scoring_batch. Analysis cannot register new scores.
+Stable key + task + kind creates a new immutable version; distinct batches use new keys.
+Explicit resourceId updates require current baseVersionId, same project/kind and task ownership
+or selected reference. Backend writes authoritative task/run/contract/refs/template lineage.
+Artifacts have registrationStatus registered|unregistered|failed, title, kind, resourceId,
+versionId, version and registrationError. resource.registered events are emitted after
+persistence; artifact events carry final registration state. Completed CLI execution with
+failed archiving is a failed Run, with saved files retained for a later manifest repair.
+The manifest itself is control metadata, not a user-facing artifact. UI refreshes resources
+after terminal states; registered types and titles come from backend, never filename guesses.
+
+Reliability review (2026-11-04):
+- Artifact registration follows task intent: standard -> standard/reference; dataset -> dataset/artifact_batch/reference; evaluate -> scoring_batch/analysis/report/reference; analyze and report -> analysis/report/reference. Free chat does not authorize a scoring_batch.
+- Runs snapshot mounted originals, extracted text, selected skills and task context hashes. Changed/missing mounted input retains output files but fails registration visibly; source blobs and prior versions remain immutable.
+- Manual resource revisions do not inherit prior generated execution/provenance claims. previousVersionId identifies the actual prior snapshot.
+- Structured batch parse errors fail for any filename; invalid text cannot silently register zero records.
+- Serving a data directory requires an exclusive process lease. Opening Store for inspection does not recover or interrupt runs; server startup performs recovery only after acquiring the lease.
+
+Execution trace (presentation only)
+- GET /api/tasks/:taskId may attach parts[{id,text,phase?,at?}] to assistant messages. Parts are reconstructed from stored public agentMessage events; original message text and event rows are unchanged. No hidden reasoning is exposed.
+- GET /api/runs/:runId/trace downloads the complete stored, redacted event stream for that run as JSON. It is read-only, includes all replay pages, and does not resume execution or approve requests.
+- request.resolved events include the application request id and its explicit response, allowing pending approval/input queues to advance without losing other requests.

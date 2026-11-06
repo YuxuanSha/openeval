@@ -1,0 +1,20 @@
+{
+  "example_only": true,
+  "evaluation_run_id": "synthetic-eval",
+  "case_id": "synthetic-case",
+  "run_id": "synthetic-run",
+  "standard_snapshot_id": "synthetic-standard:v1",
+  "clause_id": "visual-quality",
+  "execution_status": "unknown",
+  "delivery_status": "not_provided_to_reviewer",
+  "evidence_status": "missing",
+  "applicability": "applicable",
+  "judgment_status": "insufficient_evidence",
+  "score": null,
+  "evidence_refs": [],
+  "observation": "未提供评审所需图片，不能判断视觉质量。",
+  "metric_inclusion": {
+    "visual_quality": false
+  },
+  "supersedes": null
+}

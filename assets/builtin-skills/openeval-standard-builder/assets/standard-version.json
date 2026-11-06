@@ -1,0 +1,17 @@
+{
+  "example_only": true,
+  "standard_id": "example-standard",
+  "snapshot_id": "example-standard:draft-1",
+  "status": "draft",
+  "parent_snapshot_id": null,
+  "source_refs": [],
+  "source_revision": null,
+  "content_sha256": null,
+  "purpose": "由当前业务需求填写",
+  "clauses": [],
+  "scale": null,
+  "aggregation": null,
+  "open_questions": [],
+  "changes": [],
+  "adoption_evidence": null
+}

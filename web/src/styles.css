@@ -1,0 +1,7 @@
+/* OpenDesign-derived neutral tokens and shell proportions. See third_party/opendesign/NOTICE.md. */
+@import './styles/tokens.css';
+@import './styles/shell.css';
+@import './styles/workspace.css';
+@import './styles/resources.css';
+
+.archive-status { padding: 9px 16px; color: var(--text-secondary, #666); font-size: 12px; border-bottom: 1px solid var(--border, #e6e6e6); }
