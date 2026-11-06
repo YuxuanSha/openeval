@@ -28,6 +28,11 @@ SVGs contain project-authored text and simple vector geometry, with no external 
 
 ## Publishing
 
+`dmg-background.png` is a project-authored installer background containing only
+text and simple arrow geometry. It explains dragging the app into Applications;
+it makes no signing, notarization or successful-installation claim. System fonts
+were rasterized for the image; no font file is distributed.
+
 The README uses `<picture>` to select the mobile composition at narrow widths and includes text alternatives. No Chinese interface screenshots are distributed in this image set; the original development screenshots remain unchanged outside this package.
 
 Image copy should remain distinct from current validation status and license terms. Do not add score claims, CI badges, an MIT badge, or an assertion of a public release before those facts are established.
