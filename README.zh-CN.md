@@ -25,7 +25,7 @@
 
 执行模型任务需要你自己的 **Codex CLI 和 ChatGPT 登录状态**。如果已经安装并登录，跳过安装命令，运行 `codex login status` 确认即可。
 
-首次使用时，打开 Mac 的**“终端”**，运行 [Codex 官方安装命令](https://learn.chatgpt.com/docs/cli)：
+首次使用时，打开 Mac 的 **终端**，运行 [Codex 官方安装命令](https://learn.chatgpt.com/docs/cli)：
 
 ```sh
 curl -fsSL https://chatgpt.com/codex/install.sh | sh
