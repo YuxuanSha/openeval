@@ -1,29 +1,70 @@
 # OpenEval
 
-**Your evaluation workflow. One workspace.**
-
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-<picture>
-  <source media="(max-width: 640px)" srcset="docs/images/hero-mobile-v2.png">
-  <img src="docs/images/hero-v2.png" alt="OpenEval. Your evaluation workflow. One workspace. Three evidence paths converge in an original architectural brand illustration." width="100%">
-</picture>
-
-OpenEval is a **Codex-powered evaluation harness** for working with standards, datasets, existing outputs, scores, and reports. Start a conversation, reference the material you need, and keep the execution and its evidence together.
-
-It runs through your locally installed **Codex CLI, signed in with your ChatGPT account**. The workspace and stored artifacts are local; model processing uses OpenAI's cloud services.
-
-> **Private beta.** Repository access is restricted to authorized users; this is not a public launch. Real CLI checks cover synthetic workflows, resource archiving and template reporting. A separately authorized image sample produced a local report; its private inputs are excluded and it is not an accuracy benchmark. Feishu delivery and clean-Mac distribution remain pending. See [validation scope](docs/validation.md).
+**An evaluation workspace for your Mac.** Build standards, organize datasets, evaluate existing outputs, analyze scores, and write reports with Codex CLI. Keep your materials, task history, and evidence together.
 
 ## Download for Mac
 
-**[Download OpenEval build 11 r1 for Apple Silicon](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r1/OpenEval-0.2.0-build11-r1-macos-arm64.zip)** · [Private release and checksums](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r1)
+### [Download OpenEval for Apple Silicon ↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r1/OpenEval-0.2.0-build11-r1-macos-arm64.zip)
 
-Requires **macOS 13.5+ on an Apple M-series Mac**. Node.js 24.22.1 is included; Codex CLI and your own ChatGPT sign-in are required for evaluation. Extract the ZIP and open `OpenEval.app`; no separate browser or manual backend command is needed. Downloads require GitHub sign-in and access to this private repository.
+**Build 11 r1 · ZIP · 38.7 MB**  
+**Requires:** an Apple M-series Mac, macOS 13.5+, and a GitHub account with access to this private repository. Intel, Windows, and Linux packages are not available.
 
-**Not notarized or Developer-ID signed.** This beta is ad-hoc signed, and Gatekeeper assessment reports `rejected`. Downloaded copies may be blocked. Do not disable macOS security protections to run it. Same-Mac checks do not replace clean-Mac acceptance. Read the [English installation guide](docs/beta-install.en.md), [中文安装说明](docs/beta-install.zh-CN.md), and [release validation and limits](docs/releases/v0.2.0-beta.11-r1.md) before testing.
+> **Read before installing:** this private beta is ad-hoc signed, **not Apple Developer-ID signed or notarized**. Gatekeeper assessment returns `rejected`, so macOS may block the downloaded app. If blocked, stop and wait for a signed/notarized build or contact the maintainer. Do not disable macOS security protections. Installation on a second clean Mac has not been verified.
 
-Portable evaluation content is separate from the application ZIP. Use **文件分享** in the app to export selected snapshots and attachments as `.openeval.json`, then inspect and import them on another machine. See [file sharing](docs/file-sharing.md).
+The file you need is **`OpenEval-0.2.0-build11-r1-macos-arm64.zip`**. It includes `OpenEval.app` and Node.js; no build tools or manual backend startup are required. The “Source code” archives on the Release page are for developers, not the desktop app.
+
+## Quick start
+
+### 1. Download and extract the app
+
+Use the download button above while signed in to GitHub. Double-click the ZIP, then drag `OpenEval.app` from the extracted folder into **Applications**. If you have an older copy, quit it and retain it before replacing it.
+
+### 2. Set up Codex CLI once
+
+OpenEval uses your own **ChatGPT-authenticated Codex CLI** to run model tasks. If it is already installed and signed in, skip the installer and check `codex login status`.
+
+For a new installation, open **Terminal** and run the [official Codex CLI installer](https://learn.chatgpt.com/docs/cli):
+
+```sh
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+```
+
+Open a new Terminal window, then sign in with your **ChatGPT account** in the browser:
+
+```sh
+codex login
+codex login status
+```
+
+OpenEval reuses this login. An API key is not required or used by this app. [Official sign-in help](https://learn.chatgpt.com/docs/auth?surface=cli).
+
+### 3. Open OpenEval and start a task
+
+Open `OpenEval.app` from Applications. It opens its own window and starts its local service automatically. If the app was open during Codex setup, quit and reopen it.
+
+The current interface is Chinese. Start a **new task (新任务)**, enter a request, and send it. For a first task that needs no dataset, try:
+
+> Help me draft three criteria for evaluating the factual accuracy of a question-answering assistant. Include what evidence each criterion needs. Do not score any examples yet.
+
+To evaluate your own material, import it, type **`@`** in the conversation to select the relevant versions, and state what you want evaluated. Inspect the execution and saved outputs before accepting a result. Model processing uses OpenAI's cloud services; the workspace and saved artifacts stay local.
+
+<details>
+<summary>Download troubleshooting, checksums, and detailed installation</summary>
+
+- **Download shows 404:** sign in to a GitHub account that has access to `YuxuanSha/openeval`.
+- **macOS blocks the app:** this beta is not notarized; retain the exact message and contact the maintainer or wait for a signed build.
+- **Codex is unavailable:** run `codex login status` in Terminal, finish ChatGPT sign-in, then reopen OpenEval.
+- **Detailed installation:** [English guide](docs/beta-install.en.md) · [中文安装说明](docs/beta-install.zh-CN.md).
+- **Verify the ZIP:** [Release and SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r1) · [validation and known limits](docs/releases/v0.2.0-beta.11-r1.md).
+
+</details>
+
+<picture>
+  <source media="(max-width: 640px)" srcset="docs/images/hero-mobile-v2.png">
+  <img src="docs/images/hero-v2.png" alt="OpenEval. Your evaluation workflow. One workspace. Original architectural brand illustration." width="100%">
+</picture>
 
 ## Start with the work you have
 
@@ -56,6 +97,8 @@ You do not need to build a standard, create a dataset, and score a batch before 
 
 **Archive from the conversation.** The agent receives an OpenEval task contract and writes a structured artifact manifest. The backend validates files, kinds, names, versions and source references before registering them in the corresponding library. Failed registration stays visible; revising an artifact creates an immutable version. See the [small verified workflow](docs/examples/synthetic-echo.md).
 
+Use **文件分享 (File sharing)** to export selected snapshots and attachments as `.openeval.json`, then inspect and import them on another machine. This content package is separate from the application ZIP. See [file sharing](docs/file-sharing.md).
+
 ## A typical session
 
 1. **Create a task.** An empty session immediately appears in recent tasks. Execution starts when you send a message.
@@ -67,7 +110,7 @@ The current interface is Chinese. This README uses English brand and workflow il
 
 [本机使用说明](docs/local-use.zh-CN.md) · [November 4 review](docs/review-2026-11-04.md)
 
-## Run locally
+## For developers: run from source
 
 For terminal and agent integrations, see the [CLI and MCP beta guide](docs/cli-mcp.md).
 The CLI can import versioned evidence, submit/inspect/cancel runs, and download
@@ -130,13 +173,7 @@ Model and reasoning choices come from the live CLI catalog. The compact composer
 
 ## Architecture and data
 
-```mermaid
-flowchart TB
-    UI[Mac window or browser workspace<br/>Conversation · Resources · Artifacts] <-->|HTTP / SSE| API[Local Node.js service<br/>Sessions · Task context · Versions]
-    API <--> DATA[(SQLite + local files<br/>Originals · Events · Outputs)]
-    API <-->|Native app-server| CLI[Codex CLI<br/>ChatGPT account sign-in]
-    CLI <-->|Task context and responses| MODEL[OpenAI model services]
-```
+![OpenEval architecture: the Mac window or browser connects to the local Node.js service, SQLite and local files; Codex CLI connects the local service to OpenAI model services in the cloud.](docs/images/architecture.svg)
 
 **Local storage is not offline inference.** Submitted context and referenced material may be sent through Codex CLI to the model service. File and command approvals are handled through the CLI and interface.
 
@@ -151,6 +188,8 @@ Feishu is not required. Local artifact preview and download are available; **an 
 Any future Feishu connection requires the user's own permissions and destination. Account credentials and personal document identifiers do not belong in source or default configuration.
 
 ## Development status
+
+This is a private beta. Real CLI checks cover synthetic workflows, resource archiving and template reporting. A separately authorized image sample produced a local report; its private inputs are excluded and it is not an accuracy benchmark. Feishu delivery and clean-Mac distribution remain pending.
 
 Recorded checks cover persistent sessions, native continuation, fixed references, template use, existing-score analysis, cancellation with partial artifacts, selected Skill attachments, and a synthetic native goal spanning two turns. Interface fixtures, actual UI checks, and real CLI synthetic tasks are documented separately in [validation scope](docs/validation.md).
 

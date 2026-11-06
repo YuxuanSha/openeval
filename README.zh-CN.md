@@ -1,33 +1,70 @@
 # OpenEval
 
-点击窗口顶部的「文件分享」，可将选定资料快照与图片附件导出为分享包；接收方检查清单后，在自己的 OpenEval 中导入独立副本。详见[文件分享与发行包校验](docs/file-sharing.md)。
+[English](README.md) · **简体中文**
 
-终端和 Agent 接入已提供 [CLI / MCP 内测说明](docs/cli-mcp.md)：复用现有本机服务，
-可导入版本化资料、提交/查看/取消任务和下载产物。MCP 默认只读，写入需显式开启
-`--allow-write`；安装包不包含个人凭据或评测数据。
-
-[English](README.md) · 简体中文
-
-**从对话开始，把标准、执行证据与报告连成一次可追溯的评测。**
-
-A local evaluation workspace powered by Codex CLI, with versioned context and inspectable execution.
-
-<picture>
-  <source media="(max-width: 640px)" srcset="docs/images/hero-mobile-v2.png">
-  <img src="docs/images/hero-v2.png" alt="OpenEval — Your evaluation workflow. One workspace. 原创建筑式品牌插画，三条材料路径汇入共享证据平台。" width="100%">
-</picture>
-
-OpenEval 是一个通用 eval harness：用对话组织评测工作，把标准、评测集、已有产物、评分与报告保存在同一工作区。它通过本机已登录的 **Codex CLI / ChatGPT 账号**执行任务，并展示真实会话、命令、文件和产物。
-
-**当前阶段：私有内测。** 仓库及下载只对获授权用户开放，尚未公开发布。真实 CLI 已验证合成流程、自动归档、版本修订和模板报告。另一次获授权的图像小样本已生成本地报告，私有材料不随项目分发，判分不代表准确率。飞书交付和其他 Mac 的分发验收仍待完成。验证范围见[验证说明](docs/validation.md)。
+**在 Mac 上用对话完成评测工作。** 共建标准、整理评测集、评测已有产物、分析已有评分、撰写报告，让资料、执行过程和证据保存在同一个工作区。
 
 ## 下载 Mac 应用
 
-**[下载 OpenEval build 11 r1（Apple 芯片）](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r1/OpenEval-0.2.0-build11-r1-macos-arm64.zip)** · [私有 Release 与校验文件](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r1)
+### [下载 OpenEval（Apple 芯片版）↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r1/OpenEval-0.2.0-build11-r1-macos-arm64.zip)
 
-需要 **Apple M 系列芯片、macOS 13.5+**。ZIP 已含官方 Node.js 24.22.1；执行评测仍需自己安装 Codex CLI 并用 ChatGPT 账号登录。解压后打开 `OpenEval.app`，无需另外启动浏览器或后台服务。下载需登录有本仓库权限的 GitHub 账号。
+**Build 11 r1 · ZIP 安装包 · 38.7 MB**  
+**适用设备：** Apple M 系列芯片的 Mac，macOS 13.5 或更新版本。下载时需登录有本私有仓库权限的 GitHub 账号。当前没有 Intel、Windows 或 Linux 安装包。
 
-**当前为 ad-hoc 签名，未完成 Apple Developer ID 签名或公证。** Gatekeeper 评估为 `rejected`，下载后可能被系统阻止；不要关闭系统安全保护来运行。当前同机验证不等于另一台干净 Mac 已验收。请先阅读[中文安装说明](docs/beta-install.zh-CN.md)、[英文安装说明](docs/beta-install.en.md)及[版本验证与限制](docs/releases/v0.2.0-beta.11-r1.md)。
+> **安装前请注意：** 这是私有内测包，只有 ad-hoc 签名，**尚未完成 Apple Developer ID 签名或公证**。Gatekeeper 评估为 `rejected`，macOS 可能阻止打开下载的应用。如果被阻止，请停止安装、保留提示并联系维护者，或等待签名公证版；不要关闭系统安全保护。另一台干净 Mac 的安装尚未验证。
+
+你要下载的文件是 **`OpenEval-0.2.0-build11-r1-macos-arm64.zip`**。里面已经包含 `OpenEval.app` 和 Node.js，无需自行编译或启动后台服务。Release 页里的 “Source code” 是开发用源码，不是 Mac 应用安装包。
+
+## 快速开始
+
+### 1. 下载并解压
+
+登录 GitHub 后，点击上方下载按钮。双击 ZIP 解压，把文件夹中的 **`OpenEval.app` 拖入“应用程序”**。如果已装过旧版，先退出并保留旧应用，再替换。
+
+### 2. 安装 Codex CLI 并登录一次
+
+执行模型任务需要你自己的 **Codex CLI 和 ChatGPT 登录状态**。如果已经安装并登录，跳过安装命令，运行 `codex login status` 确认即可。
+
+首次使用时，打开 Mac 的**“终端”**，运行 [Codex 官方安装命令](https://learn.chatgpt.com/docs/cli)：
+
+```sh
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+```
+
+安装完成后，重新打开一个终端窗口，执行以下命令，并在浏览器中登录自己的 **ChatGPT 账号**：
+
+```sh
+codex login
+codex login status
+```
+
+OpenEval 会复用这次登录，应用不要求填写 API key，也不采用仅 API key 的登录方式。[官方登录说明](https://learn.chatgpt.com/docs/auth?surface=cli)。
+
+### 3. 打开应用，发起第一个任务
+
+在“应用程序”中打开 **OpenEval**。它会打开自己的窗口并自动启动本机服务。若安装 Codex 时应用已经开着，先退出再重新打开。
+
+进入**新任务**，输入需求并发送。第一次可以直接试这句话，不需要先准备评测集：
+
+> 请帮我制定一个问答准确性的评测标准，先给出三个维度和各自需要的证据，暂时不要给样本打分。
+
+要评测自己的材料时，先导入资料，再在对话中输入 **`@`** 选择本次使用的具体版本，说明评测目标。执行结束后查看过程和保存的产物，再独立验收。工作区和产物保存在本机，模型处理通过 OpenAI 云端服务完成。
+
+<details>
+<summary>下载失败、安装受阻、校验文件与详细说明</summary>
+
+- **下载显示 404：** 确认当前 GitHub 账号有 `YuxuanSha/openeval` 的访问权限。
+- **macOS 提示无法打开或被阻止：** 当前包未公证，请保留原始提示并联系维护者，或等待签名版。
+- **应用提示 Codex 不可用：** 在终端执行 `codex login status`，完成 ChatGPT 登录后重开 OpenEval。
+- **详细安装步骤：** [中文安装说明](docs/beta-install.zh-CN.md) · [English guide](docs/beta-install.en.md)。
+- **安装包校验与边界：** [Release 和 SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r1) · [版本验证与已知限制](docs/releases/v0.2.0-beta.11-r1.md)。
+
+</details>
+
+<picture>
+  <source media="(max-width: 640px)" srcset="docs/images/hero-mobile.zh-CN.png">
+  <img src="docs/images/hero.zh-CN.png" alt="OpenEval：把评测工作，放进一个工作区。版本可追溯，执行有证据。原创建筑式品牌插画。" width="100%">
+</picture>
 
 ## 可以做什么
 
@@ -50,17 +87,23 @@ OpenEval 是一个通用 eval harness：用对话组织评测工作，把标准�
 5. **检查结果并交付。** 查看证据、结果和产物。需要报告时，优先按所选模板生成，并独立记录验收。目标显示 `complete` 不代表验收通过。
 
 <picture>
-  <source media="(max-width: 640px)" srcset="docs/images/workflow-mobile-v2.png">
-  <img src="docs/images/workflow-v2.png" alt="五个独立任务入口共享固定版本上下文与 Codex CLI 执行，保留可追溯产物；需要报告时优先使用所选模板，验收独立记录。" width="100%">
+  <source media="(max-width: 640px)" srcset="docs/images/workflow-mobile.zh-CN.svg">
+  <img src="docs/images/workflow.zh-CN.svg" alt="五个独立任务入口共享固定版本上下文与 Codex CLI 执行，保留可追溯产物；需要报告时优先使用所选模板，验收独立记录。" width="100%">
 </picture>
+
+## 文件分享与终端接入
+
+点击窗口顶部的「文件分享」，可将选定资料快照与图片附件导出为 `.openeval.json` 内容包；接收方检查清单后，在自己的 OpenEval 中导入独立副本。它与上方 Mac 应用安装 ZIP 是两种不同的文件。详见[文件分享说明](docs/file-sharing.md)。
+
+终端和 Agent 可按 [CLI / MCP 内测说明](docs/cli-mcp.md)接入现有本机服务，导入版本化资料、提交或取消任务、查看和下载产物。MCP 默认只读，写入需显式开启 `--allow-write`；安装包不含个人凭据或评测数据。
 
 ## 关于配图
 
-本版主入口为英文 README，所有公开配图均为英文。头图是原创 AI 辅助品牌插画，流程图是功能示意，并非产品截图。当前真实界面仍为中文；原始合成验证截图保留在开发证据中，没有用 AI 改字后冒充实测。
+英文 README 使用英文配图，本页使用对应的中文宣传图、流程图与架构图。头图是原创 AI 辅助品牌插画，流程图和架构图是功能示意，并非产品截图。当前真实界面为中文；原始合成验证截图保留在开发证据中，没有用改字插画冒充实测。
 
 各任务起点相互独立。可以直接建标准、构建评测集、评测已有产物、分析已有分数或写报告，不要求先走完“标准→集→评测”的完整链路。
 
-## 本地运行
+## 开发者：从源码运行
 
 已验证环境为 **macOS、后端 Node.js 24.22.1、前端构建 Node.js 22.22.3**。后端要求 Node.js 24+；前端要求 Node.js 22.12+。其他操作系统尚未完成验收。
 
@@ -116,13 +159,7 @@ npm stop
 
 ## 架构与数据
 
-```mermaid
-flowchart TB
-    UI[Mac window or browser workspace<br/>Conversation · Resources · Artifacts] <-->|HTTP / SSE| API[Local Node.js service<br/>Sessions · Task context · Versions]
-    API <--> DATA[(SQLite + local files<br/>Originals · Events · Outputs)]
-    API <-->|Native app-server| CLI[Codex CLI<br/>ChatGPT account sign-in]
-    CLI <-->|Task context and responses| MODEL[OpenAI model services]
-```
+![OpenEval 架构：Mac 窗口或浏览器连接本机 Node.js 服务、SQLite 与本地文件；Codex CLI 将本机服务连接到云端 OpenAI 模型服务。](docs/images/architecture.zh-CN.svg)
 
 工作台与存储在本机，**模型处理仍在云端**。提交任务时，本次上下文和引用材料可通过 Codex CLI 发送给模型服务；本地部署不等于离线推理。文件和命令审批由 CLI 与界面协同处理。
 
@@ -137,6 +174,8 @@ flowchart TB
 后续若接入飞书，需要由使用者单独配置连接、权限与目标位置。账号凭据和个人文档标识不进入源码或默认配置。
 
 ## 状态与边界
+
+当前为私有内测。真实 CLI 已验证合成流程、自动归档、版本修订和模板报告。另一次获授权的图像小样本已生成本地报告，私有材料不随项目分发，判分不代表准确率。飞书交付和其他 Mac 的分发验收仍待完成。
 
 已记录的验证覆盖：持久会话与续聊、固定版本、模板优先、已有评分分析、真实 CLI 取消与部分产物、选定 Skill 附件、原生目标自动两轮，以及新版界面的资源导航和移动布局。协议夹具、实际界面验证与真实模型合成验证分别记录，见[验证说明](docs/validation.md)。
 

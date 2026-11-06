@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">OpenEval 架构：本机工作区，云端模型处理</title>
+  <desc id="desc">Mac 窗口或浏览器通过 HTTP 与 SSE 连接本机 Node.js 服务；服务读写 SQLite 与本地文件，通过原生 app-server 连接 Codex CLI；CLI 使用自己的 ChatGPT 账号向 OpenAI 云端发送任务上下文并接收模型响应。图中连接均为双向。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#6c8460" stroke-width="1.5" />
+    </marker>
+  </defs>
+  <rect width="1200" height="800" fill="#f7f8f6" />
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif">
+    <text x="40" y="56" font-size="31" font-weight="600" fill="#202020">工作区在本机，模型处理在云端。</text>
+    <rect x="30" y="90" width="1140" height="500" rx="14" fill="#ffffff" stroke="#d8ddd6" stroke-width="2" />
+    <text x="60" y="135" font-size="18" font-weight="600" letter-spacing="1.8" fill="#60645f">你的 Mac</text>
+
+    <g fill="none" stroke="#6c8460" stroke-width="2.5" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M 364 265 H 436" />
+      <path d="M 754 265 H 826" />
+      <path d="M 595 354 V 436" />
+      <path d="M 985 354 V 666" />
+    </g>
+    <g font-size="16" text-anchor="middle" fill="#60645f">
+      <text x="400" y="225">HTTP</text>
+      <text x="400" y="246">/ SSE</text>
+      <text x="790" y="225">Native</text>
+      <text x="790" y="246">app-server</text>
+      <text x="675" y="398">读写</text>
+    </g>
+    <text x="1010" y="456" font-size="18" fill="#60645f">任务上下文</text>
+    <text x="1010" y="482" font-size="18" fill="#60645f">与模型响应</text>
+
+    <rect x="50" y="180" width="310" height="170" rx="10" fill="#f7f8f6" stroke="#d8ddd6" stroke-width="2" />
+    <text x="75" y="221" font-size="25" font-weight="600" fill="#202020">Mac 窗口或</text>
+    <text x="75" y="254" font-size="25" font-weight="600" fill="#202020">浏览器工作区</text>
+    <text x="75" y="296" font-size="20" fill="#60645f">对话 · 资料</text>
+    <text x="75" y="325" font-size="20" fill="#60645f">产物</text>
+
+    <rect x="440" y="180" width="310" height="170" rx="10" fill="#f0f7eb" stroke="#d8ddd6" stroke-width="2" />
+    <text x="465" y="226" font-size="25" font-weight="600" fill="#202020">本机 Node.js 服务</text>
+    <text x="465" y="272" font-size="20" fill="#60645f">会话 · 任务上下文</text>
+    <text x="465" y="303" font-size="20" fill="#60645f">版本</text>
+
+    <rect x="830" y="180" width="310" height="170" rx="10" fill="#202020" />
+    <text x="855" y="232" font-size="31" font-weight="600" fill="#ffffff">Codex CLI</text>
+    <text x="855" y="279" font-size="21" fill="#d9ddd6">使用你的 ChatGPT 账号</text>
+    <text x="855" y="310" font-size="21" fill="#d9ddd6">登录</text>
+
+    <rect x="440" y="440" width="310" height="115" rx="10" fill="#f7f8f6" stroke="#d8ddd6" stroke-width="2" />
+    <text x="465" y="482" font-size="25" font-weight="600" fill="#202020">SQLite 与本地文件</text>
+    <text x="465" y="522" font-size="20" fill="#60645f">原件 · 事件 · 输出</text>
+
+    <rect x="30" y="630" width="1140" height="140" rx="14" fill="#f0f7eb" stroke="#d8ddd6" stroke-width="2" />
+    <text x="60" y="674" font-size="18" font-weight="600" letter-spacing="1.8" fill="#60645f">OPENAI 云端</text>
+    <text x="60" y="716" font-size="23" fill="#202020">模型处理通过 OpenAI 服务完成。</text>
+    <text x="60" y="747" font-size="20" fill="#60645f">本地存储不代表离线推理。</text>
+    <path d="M 985 630 V 666" fill="none" stroke="#6c8460" stroke-width="2.5" marker-end="url(#arrow)" />
+    <rect x="830" y="670" width="310" height="70" rx="10" fill="#ffffff" stroke="#d8ddd6" stroke-width="2" />
+    <text x="985" y="713" text-anchor="middle" font-size="25" font-weight="600" fill="#202020">OpenAI 模型服务</text>
+  </g>
+</svg>

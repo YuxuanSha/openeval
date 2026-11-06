@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">OpenEval architecture: local workspace, cloud inference</title>
+  <desc id="desc">The Mac window or browser exchanges HTTP and server-sent events with the local Node.js service. The service reads and writes SQLite and local files, and communicates with Codex CLI through its native app-server. Codex CLI uses the user's ChatGPT sign-in to exchange task context and responses with OpenAI model services in the cloud. All connections are bidirectional.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#6c8460" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="800" fill="#f7f8f6"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif">
+    <text x="40" y="56" font-size="31" font-weight="600" fill="#202020">Local workspace. Cloud inference.</text>
+    <rect x="30" y="90" width="1140" height="500" rx="14" fill="#ffffff" stroke="#d8ddd6" stroke-width="2"/>
+    <text x="60" y="135" font-size="18" font-weight="600" letter-spacing="1.8" fill="#60645f">ON YOUR MAC</text>
+
+    <g fill="none" stroke="#6c8460" stroke-width="2.5" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M 364 265 H 436"/>
+      <path d="M 754 265 H 826"/>
+      <path d="M 595 354 V 436"/>
+      <path d="M 985 354 V 666"/>
+    </g>
+    <g font-size="16" text-anchor="middle" fill="#60645f">
+      <text x="400" y="225">HTTP</text>
+      <text x="400" y="246">/ SSE</text>
+      <text x="790" y="225">Native</text>
+      <text x="790" y="246">app-server</text>
+      <text x="675" y="398">Read / write</text>
+    </g>
+    <text x="1010" y="456" font-size="18" fill="#60645f">Task context</text>
+    <text x="1010" y="482" font-size="18" fill="#60645f">and responses</text>
+
+    <rect x="50" y="180" width="310" height="170" rx="10" fill="#f7f8f6" stroke="#d8ddd6" stroke-width="2"/>
+    <text x="75" y="221" font-size="25" font-weight="600" fill="#202020">Mac window or</text>
+    <text x="75" y="254" font-size="25" font-weight="600" fill="#202020">browser workspace</text>
+    <text x="75" y="296" font-size="20" fill="#60645f">Conversation · Resources</text>
+    <text x="75" y="325" font-size="20" fill="#60645f">Artifacts</text>
+
+    <rect x="440" y="180" width="310" height="170" rx="10" fill="#f0f7eb" stroke="#d8ddd6" stroke-width="2"/>
+    <text x="465" y="226" font-size="25" font-weight="600" fill="#202020">Local Node.js service</text>
+    <text x="465" y="272" font-size="20" fill="#60645f">Sessions · Task context</text>
+    <text x="465" y="303" font-size="20" fill="#60645f">Versions</text>
+
+    <rect x="830" y="180" width="310" height="170" rx="10" fill="#202020"/>
+    <text x="855" y="232" font-size="31" font-weight="600" fill="#ffffff">Codex CLI</text>
+    <text x="855" y="279" font-size="21" fill="#d9ddd6">Your ChatGPT account</text>
+    <text x="855" y="310" font-size="21" fill="#d9ddd6">sign-in</text>
+
+    <rect x="440" y="440" width="310" height="115" rx="10" fill="#f7f8f6" stroke="#d8ddd6" stroke-width="2"/>
+    <text x="465" y="482" font-size="25" font-weight="600" fill="#202020">SQLite + local files</text>
+    <text x="465" y="522" font-size="20" fill="#60645f">Originals · Events · Outputs</text>
+
+    <rect x="30" y="630" width="1140" height="140" rx="14" fill="#f0f7eb" stroke="#d8ddd6" stroke-width="2"/>
+    <text x="60" y="674" font-size="18" font-weight="600" letter-spacing="1.8" fill="#60645f">OPENAI CLOUD</text>
+    <text x="60" y="716" font-size="23" fill="#202020">Model processing uses OpenAI services.</text>
+    <text x="60" y="747" font-size="20" fill="#60645f">Local storage does not mean offline inference.</text>
+    <path d="M 985 630 V 666" fill="none" stroke="#6c8460" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <rect x="830" y="670" width="310" height="70" rx="10" fill="#ffffff" stroke="#d8ddd6" stroke-width="2"/>
+    <text x="985" y="713" text-anchor="middle" font-size="25" font-weight="600" fill="#202020">OpenAI model services</text>
+  </g>
+</svg>
