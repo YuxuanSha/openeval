@@ -6,20 +6,21 @@
 
 ## 下载 Mac 应用
 
-### [下载 OpenEval（Apple 芯片版）↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r1/OpenEval-0.2.0-build11-r1-macos-arm64.zip)
+### [下载 Mac DMG（Apple 芯片版）↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r2/OpenEval-0.2.0-build11-r2-macos-arm64.dmg)
 
-**Build 11 r1 · ZIP 安装包 · 38.7 MB**  
-**适用设备：** Apple M 系列芯片的 Mac，macOS 13.5 或更新版本。下载时需登录有本私有仓库权限的 GitHub 账号。当前没有 Intel、Windows 或 Linux 安装包。
+**Build 11 r2 · DMG 安装包 · 45.1 MB**
 
-> **安装前请注意：** 这是私有内测包，只有 ad-hoc 签名，**尚未完成 Apple Developer ID 签名或公证**。Gatekeeper 评估为 `rejected`，macOS 可能阻止打开下载的应用。如果被阻止，请停止安装、保留提示并联系维护者，或等待签名公证版；不要关闭系统安全保护。另一台干净 Mac 的安装尚未验证。
+**适用设备：** Apple M 系列芯片的 Mac，macOS 13.5 或更新版本。当前没有 Intel、Windows 或 Linux 安装包。
 
-你要下载的文件是 **`OpenEval-0.2.0-build11-r1-macos-arm64.zip`**。里面已经包含 `OpenEval.app` 和 Node.js，无需自行编译或启动后台服务。Release 页里的 “Source code” 是开发用源码，不是 Mac 应用安装包。
+> **签名公证仍待完成：** 当前应用**没有 Developer ID 签名或 Apple 公证**，Gatekeeper 拒绝运行，下载后的副本已出现“Apple 无法验证”提示。DMG 改善了安装形式，**不能消除该安全提示**。若被阻止，请停止并等待签名公证版，不要关闭安全保护。[验证情况与限制](docs/releases/v0.2.0-beta.11-r2.md)。
+
+你要下载的文件是 **`OpenEval-0.2.0-build11-r2-macos-arm64.dmg`**。里面已经包含 `OpenEval.app` 和 Node.js，无需自行编译或启动后台服务。Release 页里的 “Source code” 是开发用源码，不是 Mac 应用安装包。
 
 ## 快速开始
 
-### 1. 下载并解压
+### 1. 打开 DMG，拖入应用程序
 
-登录 GitHub 后，点击上方下载按钮。双击 ZIP 解压，把文件夹中的 **`OpenEval.app` 拖入“应用程序”**。如果已装过旧版，先退出并保留旧应用，再替换。
+点击上方下载按钮，双击 `.dmg`。在安装窗口中，把左侧 **OpenEval** 拖到右侧 **Applications（应用程序）**。推出“OpenEval Installer”磁盘，再从“应用程序”打开 OpenEval。若已装过旧版，先退出并保留旧应用，再替换；不要合并应用包。若出现 macOS 安全阻止，请在此停止，后续步骤不会解除该阻止。
 
 ### 2. 安装 Codex CLI 并登录一次
 
@@ -53,11 +54,11 @@ OpenEval 会复用这次登录，应用不要求填写 API key，也不采用仅
 <details>
 <summary>下载失败、安装受阻、校验文件与详细说明</summary>
 
-- **下载显示 404：** 确认当前 GitHub 账号有 `YuxuanSha/openeval` 的访问权限。
+- **下载失败：** 打开 [r2 Release](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2)，选择文件名以 `macos-arm64.dmg` 结尾的安装包。
 - **macOS 提示无法打开或被阻止：** 当前包未公证，请保留原始提示并联系维护者，或等待签名版。
 - **应用提示 Codex 不可用：** 在终端执行 `codex login status`，完成 ChatGPT 登录后重开 OpenEval。
 - **详细安装步骤：** [中文安装说明](docs/beta-install.zh-CN.md) · [English guide](docs/beta-install.en.md)。
-- **安装包校验与边界：** [Release 和 SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r1) · [版本验证与已知限制](docs/releases/v0.2.0-beta.11-r1.md)。
+- **安装包校验与边界：** [Release 和 SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) · [版本验证与已知限制](docs/releases/v0.2.0-beta.11-r2.md)。
 
 </details>
 
@@ -93,7 +94,7 @@ OpenEval 会复用这次登录，应用不要求填写 API key，也不采用仅
 
 ## 文件分享与终端接入
 
-点击窗口顶部的「文件分享」，可将选定资料快照与图片附件导出为 `.openeval.json` 内容包；接收方检查清单后，在自己的 OpenEval 中导入独立副本。它与上方 Mac 应用安装 ZIP 是两种不同的文件。详见[文件分享说明](docs/file-sharing.md)。
+点击窗口顶部的「文件分享」，可将选定资料快照与图片附件导出为 `.openeval.json` 内容包；接收方检查清单后，在自己的 OpenEval 中导入独立副本。它与上方 Mac 应用安装 DMG 是两种不同的文件。详见[文件分享说明](docs/file-sharing.md)。
 
 终端和 Agent 可按 [CLI / MCP 内测说明](docs/cli-mcp.md)接入现有本机服务，导入版本化资料、提交或取消任务、查看和下载产物。MCP 默认只读，写入需显式开启 `--allow-write`；安装包不含个人凭据或评测数据。
 
@@ -128,7 +129,7 @@ npm --prefix web run build
 npm start
 ```
 
-直接使用应用请下载上方 Mac ZIP，其中已包含 Node；源码构建参阅[桌面应用说明](docs/desktop-macos.zh-CN.md)，未选配内置运行时的源码构建仍需本机 Node 24+。应用打开自己的窗口，以 ⌘Q 退出；Codex CLI 为独立依赖。浏览器流程可使用 <http://127.0.0.1:4318> 或根目录的 `Start OpenEval.command` / `Stop OpenEval.command`。不要同时启动使用同一目录的两份服务。
+直接使用应用请下载上方 Mac DMG，其中已包含 Node；源码构建参阅[桌面应用说明](docs/desktop-macos.zh-CN.md)，未选配内置运行时的源码构建仍需本机 Node 24+。应用打开自己的窗口，以 ⌘Q 退出；Codex CLI 为独立依赖。浏览器流程可使用 <http://127.0.0.1:4318> 或根目录的 `Start OpenEval.command` / `Stop OpenEval.command`。不要同时启动使用同一目录的两份服务。
 
 ```sh
 npm run status
@@ -175,7 +176,7 @@ npm stop
 
 ## 状态与边界
 
-当前为私有内测。真实 CLI 已验证合成流程、自动归档、版本修订和模板报告。另一次获授权的图像小样本已生成本地报告，私有材料不随项目分发，判分不代表准确率。飞书交付和其他 Mac 的分发验收仍待完成。
+当前为开源测试版；桌面应用签名、公证和干净 Mac 验收仍待完成。真实 CLI 已验证合成流程、自动归档、版本修订和模板报告。另一次获授权的图像小样本已生成本地报告，私有材料不随项目分发，判分不代表准确率。飞书交付和其他 Mac 的分发验收仍待完成。
 
 已记录的验证覆盖：持久会话与续聊、固定版本、模板优先、已有评分分析、真实 CLI 取消与部分产物、选定 Skill 附件、原生目标自动两轮，以及新版界面的资源导航和移动布局。协议夹具、实际界面验证与真实模型合成验证分别记录，见[验证说明](docs/validation.md)。
 
@@ -201,3 +202,5 @@ OpenEval 自有代码采用 [MIT](LICENSE)；第三方材料保留各自条款�
 [OpenDesign](https://github.com/nexu-io/open-design) 对界面结构与会话生命周期的启发。来源映射与改编声明见 [`web/OPENDESIGN_REFERENCE.md`](web/OPENDESIGN_REFERENCE.md) 和 [`web/third_party/opendesign/`](web/third_party/opendesign/)。最终分发声明必须对应实际合入、经审计的源码。本项目与 OpenDesign 无官方关联。
 
 前端使用 React、Vite、TypeScript 和 Lucide，各依赖仍受自身许可证约束。头图由内置图像生成工具辅助创作，工具未暴露可核实的底层型号，未标称使用 image2.5。流程图保留可编辑矢量源文件。
+
+源码和分发包已进行隐私检查，详见[检查范围与保留内容](docs/distribution-privacy.md)。

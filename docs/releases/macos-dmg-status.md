@@ -48,4 +48,4 @@ published bytes through a browser and test mounting, copying, normal launch and
 reopening without changing security settings. Test on a separate clean Mac as
 an additional acceptance gate. Preserve existing apps and user workspaces.
 
-The r1 Release and its checksums remain unchanged while this gate is unresolved.
+The r1 Release and its checksums remain unchanged. The r2 DMG is distributed as an explicitly unnotarized prerelease; see [r2 checks and limits](v0.2.0-beta.11-r2.md). Publishing a prerelease does not mark the signing gate as passed.

@@ -10,7 +10,7 @@ export function auditFiles(root,paths){
   for(const path of paths){
     if(privatePath.test(path))findings.push({path,rule:'private-file'});
     const file=join(root,path);if(!existsSync(file)){findings.push({path,rule:'missing-file'});continue;}const stat=lstatSync(file);if(stat.isSymbolicLink()||!stat.isFile()){findings.push({path,rule:'non-regular-file'});continue;}
-    if(!/\.(?:ts|tsx|js|mjs|json|md|txt|html|css|svg|swift|sh|command)$/i.test(path))continue;
+    if(!/\.(?:ts|tsx|js|mjs|json|md|txt|html|css|svg|swift|py|sh|command)$/i.test(path))continue;
     const source=readFileSync(file,'utf8');
     const patterns=[['credential',/(?:sk-(?:proj-)?[A-Za-z0-9_-]{24,}|gh[pousr]_[A-Za-z0-9]{24,}|github_pat_[A-Za-z0-9_]{24,}|AKIA[A-Z0-9]{16}|-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----[\r\n]+[A-Za-z0-9+/=]{20})/],['private-source',/libfile_[a-z0-9]{8,}|https?:\/\/[^\s"'<>]*\.(?:feishu\.cn|larkoffice\.com)\/(?:docx|wiki|sheets|base)\/[a-zA-Z0-9]{8,}/],['personal-absolute-path',/\/(?:Users|home)\/[A-Za-z0-9._-]+\/(?:Documents|Desktop|Downloads|\.codex|\.aws)\//]];
     for(const [rule,pattern] of patterns)if(pattern.test(source))findings.push({path,rule});

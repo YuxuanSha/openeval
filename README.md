@@ -6,20 +6,21 @@
 
 ## Download for Mac
 
-### [Download OpenEval for Apple Silicon ↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r1/OpenEval-0.2.0-build11-r1-macos-arm64.zip)
+### [Download the Mac DMG · Apple Silicon ↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r2/OpenEval-0.2.0-build11-r2-macos-arm64.dmg)
 
-**Build 11 r1 · ZIP · 38.7 MB**  
-**Requires:** an Apple M-series Mac, macOS 13.5+, and a GitHub account with access to this private repository. Intel, Windows, and Linux packages are not available.
+**Build 11 r2 · DMG · 45.1 MB**
 
-> **Read before installing:** this private beta is ad-hoc signed, **not Apple Developer-ID signed or notarized**. Gatekeeper assessment returns `rejected`, so macOS may block the downloaded app. If blocked, stop and wait for a signed/notarized build or contact the maintainer. Do not disable macOS security protections. Installation on a second clean Mac has not been verified.
+**Requires:** an Apple M-series Mac and macOS 13.5+. Intel, Windows, and Linux packages are not available.
 
-The file you need is **`OpenEval-0.2.0-build11-r1-macos-arm64.zip`**. It includes `OpenEval.app` and Node.js; no build tools or manual backend startup are required. The “Source code” archives on the Release page are for developers, not the desktop app.
+> **Signing is still pending:** this beta is **not Developer ID signed or Apple notarized**. Gatekeeper rejects it, and a downloaded copy has shown Apple’s verification warning. The DMG fixes the installation layout; **it does not fix that warning**. If blocked, stop and wait for a signed/notarized build. Do not disable security protections. [Current validation and limits](docs/releases/v0.2.0-beta.11-r2.md).
+
+The file you need is **`OpenEval-0.2.0-build11-r2-macos-arm64.dmg`**. It includes `OpenEval.app` and Node.js; no build tools or manual backend startup are required. The “Source code” archives on the Release page are for developers, not the desktop app.
 
 ## Quick start
 
-### 1. Download and extract the app
+### 1. Open the DMG and drag the app into Applications
 
-Use the download button above while signed in to GitHub. Double-click the ZIP, then drag `OpenEval.app` from the extracted folder into **Applications**. If you have an older copy, quit it and retain it before replacing it.
+Download the DMG above and double-click it. In the installer window, drag **OpenEval** onto **Applications**. Eject **OpenEval Installer**, then open OpenEval from Applications. If you have an older copy, quit and retain it before replacing it; do not merge app bundles. If macOS shows a security block, stop at that point—the steps below do not override it.
 
 ### 2. Set up Codex CLI once
 
@@ -53,11 +54,11 @@ To evaluate your own material, import it, type **`@`** in the conversation to se
 <details>
 <summary>Download troubleshooting, checksums, and detailed installation</summary>
 
-- **Download shows 404:** sign in to a GitHub account that has access to `YuxuanSha/openeval`.
+- **Download fails:** open the [r2 Release](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) and select the file ending in `macos-arm64.dmg`.
 - **macOS blocks the app:** this beta is not notarized; retain the exact message and contact the maintainer or wait for a signed build.
 - **Codex is unavailable:** run `codex login status` in Terminal, finish ChatGPT sign-in, then reopen OpenEval.
 - **Detailed installation:** [English guide](docs/beta-install.en.md) · [中文安装说明](docs/beta-install.zh-CN.md).
-- **Verify the ZIP:** [Release and SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r1) · [validation and known limits](docs/releases/v0.2.0-beta.11-r1.md).
+- **Verify the DMG:** [Release and SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) · [validation and known limits](docs/releases/v0.2.0-beta.11-r2.md).
 
 </details>
 
@@ -97,7 +98,7 @@ You do not need to build a standard, create a dataset, and score a batch before 
 
 **Archive from the conversation.** The agent receives an OpenEval task contract and writes a structured artifact manifest. The backend validates files, kinds, names, versions and source references before registering them in the corresponding library. Failed registration stays visible; revising an artifact creates an immutable version. See the [small verified workflow](docs/examples/synthetic-echo.md).
 
-Use **文件分享 (File sharing)** to export selected snapshots and attachments as `.openeval.json`, then inspect and import them on another machine. This content package is separate from the application ZIP. See [file sharing](docs/file-sharing.md).
+Use **文件分享 (File sharing)** to export selected snapshots and attachments as `.openeval.json`, then inspect and import them on another machine. This content package is separate from the application DMG. See [file sharing](docs/file-sharing.md).
 
 ## A typical session
 
@@ -140,7 +141,7 @@ Then start the backend using **Node.js 24+**:
 npm start
 ```
 
-For the prebuilt native application, use the Mac download above; Node is bundled in that ZIP. For a source build, see the [macOS build guide](docs/desktop-macos.zh-CN.md). Both use a native window and manage their backend lifecycle; quit with ⌘Q. Source builds without the optional runtime archive need installed Node 24+. Codex CLI remains a separate dependency.
+For the prebuilt native application, use the Mac download above; Node is bundled in that DMG. For a source build, see the [macOS build guide](docs/desktop-macos.zh-CN.md). Both use a native window and manage their backend lifecycle; quit with ⌘Q. Source builds without the optional runtime archive need installed Node 24+. Codex CLI remains a separate dependency.
 
 For the optional browser workflow, open <http://127.0.0.1:4318> after starting the service. Do not run the app and the browser launcher against the same data directory simultaneously.
 
@@ -189,7 +190,7 @@ Any future Feishu connection requires the user's own permissions and destination
 
 ## Development status
 
-This is a private beta. Real CLI checks cover synthetic workflows, resource archiving and template reporting. A separately authorized image sample produced a local report; its private inputs are excluded and it is not an accuracy benchmark. Feishu delivery and clean-Mac distribution remain pending.
+This is an open-source beta; desktop signing and clean-Mac acceptance are still pending. Real CLI checks cover synthetic workflows, resource archiving and template reporting. A separately authorized image sample produced a local report; its private inputs are excluded and it is not an accuracy benchmark. Feishu delivery and clean-Mac distribution remain pending.
 
 Recorded checks cover persistent sessions, native continuation, fixed references, template use, existing-score analysis, cancellation with partial artifacts, selected Skill attachments, and a synthetic native goal spanning two turns. Interface fixtures, actual UI checks, and real CLI synthetic tasks are documented separately in [validation scope](docs/validation.md).
 
@@ -213,3 +214,5 @@ OpenEval's original code is licensed under [MIT](LICENSE). Third-party material 
 [OpenDesign](https://github.com/nexu-io/open-design) informed the interface layout and conversation lifecycle. Source mappings and adaptation notices are tracked in [`web/OPENDESIGN_REFERENCE.md`](web/OPENDESIGN_REFERENCE.md) and [`web/third_party/opendesign/`](web/third_party/opendesign/). Final redistribution notices must follow the audited source actually included. OpenEval is independent and is not an official OpenDesign distribution.
 
 The frontend uses React, Vite, TypeScript, and Lucide, each subject to its own terms. The hero is original AI-assisted brand artwork; the workflow diagram is an editable project illustration. Neither is a screenshot or a claim about completed evaluation results. See [visual assets](docs/images/ASSETS.md).
+
+The published source and distribution were reviewed for private data; see [privacy review scope](docs/distribution-privacy.md).

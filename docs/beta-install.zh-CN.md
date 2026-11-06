@@ -1,16 +1,16 @@
-# OpenEval 0.2.0 · build 11 r1 内测安装
+# OpenEval 0.2.0 · build 11 r2 DMG 安装
 
-这是 Apple 芯片 Mac 的本地桌面应用。r1 是 build 11 的运行时打包修订：包含官方 Node.js 24.22.1，评测业务和 trace v2 保持 build 11 基线。不是公开发行版。
+这是 Apple 芯片 Mac 的本地桌面应用。r2 改为常见的 DMG 拖拽安装，保留 r1 的应用及官方 Node.js 24.22.1，评测业务和 trace v2 保持 build 11 基线。当前仍是未签名公证的测试版。
 
 ## 安装与打开
 
 1. 确认使用 Apple M 系列芯片、macOS 13.5 或更新版本。本包不支持 Intel Mac、Windows 或 Linux。
-2. 双击 ZIP 解压。先阅读同目录的 `BUILD.json` 和本说明；需要时用 `shasum -a 256 <ZIP路径>` 对照随包交付的 SHA256 文件。
-3. 将文件夹中的 `OpenEval.app` 拖到自己的“应用程序”文件夹；若同名应用已存在，先退出并保留旧应用，再决定是否替换。不要合并应用包。也可先从解压目录试用。
-4. 双击 `OpenEval.app`。它会打开自己的窗口，自动启动本机服务，无需打开浏览器或终端启动后台。
-5. 执行任务前，按 [Codex 官方安装说明](https://learn.chatgpt.com/docs/codex/cli) 安装 Codex CLI，在终端运行一次 `codex`，用测试者自己的 ChatGPT 账号登录；随后重开 OpenEval。仅 API key 登录不会被本应用采用。首次打开可以先查看和导入本地资料。
+2. [下载 Apple 芯片 DMG](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r2/OpenEval-0.2.0-build11-r2-macos-arm64.dmg)。需要时运行 `shasum -a 256 <DMG路径>`，对照 Release 的 `SHA256SUMS.txt`；源码 ZIP 不是应用安装包。
+3. 双击 DMG，把左侧 **OpenEval** 拖到右侧 **Applications（应用程序）**。若已有旧版，先退出并保留旧应用，再替换；不要合并应用包。
+4. 推出“OpenEval Installer”磁盘，再从“应用程序”打开 OpenEval。若出现安全阻止，请停止并等待签名公证版；DMG 不会解除安全阻止。
+5. 执行模型任务前，按 [Codex 官方说明](https://learn.chatgpt.com/docs/cli) 安装 CLI，运行 `codex login` 和 `codex login status`，使用自己的 ChatGPT 账号登录，然后重开 OpenEval。仅 API key 登录不会被本应用采用；浏览与导入本地资料不执行模型推理。
 
-本包为 **ad-hoc 签名，没有 Apple Developer ID 签名或公证**。macOS 可能阻止从网络下载的包打开；校验哈希不等于 Apple 公证。若出现安全阻止、损坏或权限提示，请保留准确提示并联系维护者，或等待签名公证版；本说明不要求关闭 Gatekeeper、移除隔离标记或授予完全磁盘访问权限。企业管理策略也可能阻止运行。
+本包为 **ad-hoc 签名，没有 Apple Developer ID 签名或公证**。Gatekeeper 评估拒绝运行，下载后的 r1 副本已出现“Apple 无法验证”提示；r2 保留相同应用字节，尚无新的签名或公证。校验哈希不等于 Apple 公证。若出现安全阻止、损坏或权限提示，请保留准确提示并联系维护者，或等待签名公证版；本说明不要求关闭 Gatekeeper、移除隔离标记或授予完全磁盘访问权限。企业管理策略也可能阻止运行。
 
 ## 数据、退出与升级
 
@@ -27,10 +27,10 @@
 - 已包含 Node 运行时；不需要安装 ChatGPT、npm 或 Xcode 来打开应用。Codex CLI 安装方式自身可能有额外要求，请以官方说明为准。内置 Node 未作为系统级 `node` 或 `npm` 安装。
 - Skill ZIP 导入目前调用 `/usr/bin/python3`。若本机不可用，此项会报错；单文件 `SKILL.md` 和 `.openeval.json` 分享包导入不依赖 Python。飞书等第三方能力需自行配置合法的本机连接，本包不附送任何个人连接。
 - “文件分享”中先选择版本与附件并检查，再下载 `.openeval.json`；接收方在同一入口导入并检查后确认。它是 JSON 离线内容包，不是应用安装包，也不是公网链接。不会自动发布、分享账号或运行导入的 skill。
-- CLI/MCP 属于另行交付的 npm 包，未随此桌面 ZIP 安装到系统；需要时参考项目 `docs/cli-mcp.md`。没有自动更新或公网分享托管服务。
+- CLI/MCP 属于另行交付的 npm 包，未随此桌面 DMG 安装到系统；需要时参考项目 `docs/cli-mcp.md`。没有自动更新或公网分享托管服务。
 
 ## 本包验证范围
 
-`VALIDATION.txt` 记录这次实际测试。当前只在一台 Apple 芯片 Mac 上验证；隔离 PATH、空数据目录和解压后启动不能替代全新 Mac、全新 macOS 用户或经过下载隔离的 Gatekeeper 验收。最低系统版本依据内置 Node 官方要求及 Mach-O 标记，未在 macOS 13.5 实机跑过。
+[r2 验证说明](releases/v0.2.0-beta.11-r2.md)记录实际检查与未完成项目。当前只在一台 Apple 芯片 Mac 上验证；隔离 PATH、空数据目录和解压后启动不能替代全新 Mac、全新 macOS 用户或经过下载隔离的 Gatekeeper 验收。最低系统版本依据内置 Node 官方要求及 Mach-O 标记，未在 macOS 13.5 实机跑过。
 
 许可：OpenEval 自有代码为 MIT；实际第三方许可及 OpenDesign 来源说明在应用 `Contents/Resources/runtime/` 内。Node 完整许可和来源哈希在 `Contents/Resources/Node-LICENSE.txt`、`node-provenance.json`。本包不包含用户私有业务评测、登录态或原始会话。

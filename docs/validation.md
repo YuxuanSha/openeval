@@ -24,7 +24,7 @@ See [findings and diagnostic matrix](review-2026-11-04.md). Twelve checks exerci
 
 The current product interface is Chinese. Original screenshots use clearly labeled synthetic materials and are retained in development evidence. This English README does not replace their text with AI-generated translations or present a conceptual image as an actual interface screenshot.
 
-Public README graphics are English-language brand and workflow illustrations. They contain no user cases, personal document links, credentials, invented scores, or acceptance badges.
+README graphics use matching English and Chinese brand, workflow and architecture illustrations. They contain no user cases, personal document links, credentials, invented scores, or acceptance badges.
 
 ## Repeatable code checks
 
