@@ -1,16 +1,16 @@
-# OpenEval 0.2.0 · build 11 r2 DMG 安装
+# OpenEval 0.2.0 · build 12 DMG 安装
 
-这是 Apple 芯片 Mac 的本地桌面应用。r2 改为常见的 DMG 拖拽安装，保留 r1 的应用及官方 Node.js 24.22.1，评测业务和 trace v2 保持 build 11 基线。当前仍是未签名公证的测试版。
+适用于 Apple 芯片 Mac（macOS 13.5 或更新版本）。包含官方 Node.js 24.22.1。Finder 安装窗口列出了首次打开指引，旁边有双语说明；App 内不再弹窗。此版本未取得 Apple 公证。
 
 ## 安装与打开
 
 1. 确认使用 Apple M 系列芯片、macOS 13.5 或更新版本。本包不支持 Intel Mac、Windows 或 Linux。
-2. [下载 Apple 芯片 DMG](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r2/OpenEval-0.2.0-build11-r2-macos-arm64.dmg)。需要时运行 `shasum -a 256 <DMG路径>`，对照 Release 的 `SHA256SUMS.txt`；源码 ZIP 不是应用安装包。
+2. [下载 Apple 芯片 DMG](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.12/OpenEval-0.2.0-build12-macos-arm64.dmg)。需要时运行 `shasum -a 256 <DMG路径>`，对照 Release 的 `SHA256SUMS.txt`；源码 ZIP 不是应用安装包。
 3. 双击 DMG，把左侧 **OpenEval** 拖到右侧 **Applications（应用程序）**。若已有旧版，先退出并保留旧应用，再替换；不要合并应用包。
 4. 推出“OpenEval Installer”磁盘，再从“应用程序”打开 OpenEval。如果提示“Apple 无法验证”，请先看[首次打开指引](https://github.com/YuxuanSha/openeval/blob/main/README.zh-CN.md#如果提示-apple-无法验证-openeval)；DMG 不会消除这个提示。
 5. 执行模型任务前，按 [Codex 官方说明](https://learn.chatgpt.com/docs/cli) 安装 CLI，运行 `codex login` 和 `codex login status`，使用自己的 ChatGPT 账号登录，然后重开 OpenEval。仅 API key 登录不会被本应用采用；浏览与导入本地资料不执行模型推理。
 
-本包为 **ad-hoc 签名，没有 Apple Developer ID 签名或公证**。Gatekeeper 评估拒绝运行，下载后的 r1 副本已出现“Apple 无法验证”提示；r2 保留相同应用字节，尚无新的签名或公证。校验哈希不等于 Apple 公证。如果提示应用已损坏、会损坏电脑，或企业管理策略不允许打开，请停止、保留准确提示并联系管理员，或等待签名公证版；本说明不要求关闭 Gatekeeper、移除隔离标记或授予完全磁盘访问权限。企业管理策略也可能阻止运行。
+本包为 **ad-hoc 签名，没有 Apple Developer ID 签名或公证**。下载后 macOS 可能提示“Apple 无法验证”。校验哈希不等于 Apple 公证。如果提示应用已损坏、会损坏电脑，或企业管理策略不允许打开，请停止、保留准确提示并联系管理员，或等待签名公证版；本说明不要求关闭 Gatekeeper、移除隔离标记或授予完全磁盘访问权限。企业管理策略也可能阻止运行。
 
 ## 数据、退出与升级
 
@@ -31,13 +31,11 @@
 
 ## 本包验证范围
 
-[r2 验证说明](releases/v0.2.0-beta.11-r2.md)记录实际检查与未完成项目。当前只在一台 Apple 芯片 Mac 上验证；隔离 PATH、空数据目录和解压后启动不能替代全新 Mac、全新 macOS 用户或经过下载隔离的 Gatekeeper 验收。最低系统版本依据内置 Node 官方要求及 Mach-O 标记，未在 macOS 13.5 实机跑过。
+[build 12 发布与验证说明](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12)记录实际检查与未完成项目。当前只在一台 Apple 芯片 Mac 上验证；隔离 PATH、空数据目录和解压后启动不能替代全新 Mac、全新 macOS 用户或经过下载隔离的 Gatekeeper 验收。最低系统版本依据内置 Node 官方要求及 Mach-O 标记，未在 macOS 13.5 实机跑过。
 
 许可：OpenEval 自有代码为 MIT；实际第三方许可及 OpenDesign 来源说明在应用 `Contents/Resources/runtime/` 内。Node 完整许可和来源哈希在 `Contents/Resources/Node-LICENSE.txt`、`node-provenance.json`。本包不包含用户私有业务评测、登录态或原始会话。
 
 ## 运行权限与默认项
-
-这些功能从预览版 build 12 开始可用，不包含在上方的 build 11 DMG 里。
 
 任务输入框下方可以选择 **请求批准**、**自动审批** 或 **完全访问**。请求批准是第一次使用的默认选项。自动审批保留同样的工作区限制，只把符合条件的请求交给 Codex 自动审查，遇到风险仍可能询问你。完全访问不使用工作区沙箱，也不逐项请求批准，请只用于可信任务；第一次切换到此项时要明确确认。Codex、macOS 或组织策略仍然生效；若 Codex 未接受该选择，OpenEval 会停止，不会偷偷用另一档继续。
 

@@ -6,15 +6,15 @@
 
 ## Download for Mac
 
-### [Download the Mac DMG · Apple Silicon ↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r2/OpenEval-0.2.0-build11-r2-macos-arm64.dmg)
+### [Download the Mac DMG · Apple Silicon ↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.12/OpenEval-0.2.0-build12-macos-arm64.dmg)
 
-**Build 11 r2 · DMG · 45.1 MB**
+**Build 12 · DMG · 45.1 MB**
 
 **Requires:** an Apple M-series Mac and macOS 13.5+. Intel, Windows, and Linux packages are not available.
 
-> **Signing is still pending:** this beta is **not Developer ID signed or Apple notarized**. Gatekeeper rejects it, and a downloaded copy has shown Apple’s verification warning. The DMG fixes the installation layout; **it does not fix that warning**. The [first-open instructions](#if-apple-cannot-verify-openeval) are available here before the app runs. [Current validation and limits](docs/releases/v0.2.0-beta.11-r2.md).
+> **Signing is still pending:** this beta is **not Developer ID signed or Apple notarized**. Gatekeeper rejects it, and a downloaded copy has shown Apple’s verification warning. The DMG fixes the installation layout; **it does not fix that warning**. The [first-open instructions](#if-apple-cannot-verify-openeval) are available here before the app runs. [Current validation and limits](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12).
 
-The file you need is **`OpenEval-0.2.0-build11-r2-macos-arm64.dmg`**. It includes `OpenEval.app` and Node.js; no build tools or manual backend startup are required. The “Source code” archives on the Release page are for developers, not the desktop app.
+The file you need is **`OpenEval-0.2.0-build12-macos-arm64.dmg`**. It includes `OpenEval.app` and Node.js; no build tools or manual backend startup are required. The “Source code” archives on the Release page are for developers, not the desktop app.
 
 ## Quick start
 
@@ -32,7 +32,7 @@ The safest option is to wait for a signed and notarized version. If you manage t
 
 If macOS says the app is damaged or will damage your computer, or if **Open Anyway** is unavailable on a managed Mac, stop and contact your administrator or wait for a notarized build. Do not turn off Gatekeeper, remove quarantine attributes, or grant Full Disk Access to get past the warning. [Apple’s safe-opening instructions](https://support.apple.com/en-us/102445).
 
-In preview build 12 and newer, the desktop app also shows this guide after its first successful launch. Reopen it anytime via **Help (帮助) → macOS 首次打开指南**. The in-app guide cannot appear before macOS lets the app run.
+When you open the build 12 DMG, the Finder installer window shows the first-open steps alongside a bilingual Start Here guide. OpenEval does not display a startup dialog for these instructions.
 
 ### 2. Set up Codex CLI once
 
@@ -66,11 +66,11 @@ To evaluate your own material, import it, type **`@`** in the conversation to se
 <details>
 <summary>Download troubleshooting, checksums, and detailed installation</summary>
 
-- **Download fails:** open the [r2 Release](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) and select the file ending in `macos-arm64.dmg`.
+- **Download fails:** open the [build 12 Release](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12) and select the file ending in `macos-arm64.dmg`.
 - **macOS cannot verify the app:** see [the first-open instructions](#if-apple-cannot-verify-openeval). Stop if the warning says the app is damaged or harmful, or your administrator blocks it.
 - **Codex is unavailable:** run `codex login status` in Terminal, finish ChatGPT sign-in, then reopen OpenEval.
 - **Detailed installation:** [English guide](docs/beta-install.en.md) · [中文安装说明](docs/beta-install.zh-CN.md).
-- **Verify the DMG:** [Release and SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) · [validation and known limits](docs/releases/v0.2.0-beta.11-r2.md).
+- **Verify the DMG:** [Release and SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12) · [validation and known limits](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12).
 
 </details>
 

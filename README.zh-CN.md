@@ -6,15 +6,15 @@
 
 ## 下载 Mac 应用
 
-### [下载 Mac DMG（Apple 芯片版）↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r2/OpenEval-0.2.0-build11-r2-macos-arm64.dmg)
+### [下载 Mac DMG（Apple 芯片版）↓](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.12/OpenEval-0.2.0-build12-macos-arm64.dmg)
 
-**Build 11 r2 · DMG 安装包 · 45.1 MB**
+**Build 12 · DMG 安装包 · 45.1 MB**
 
 **适用设备：** Apple M 系列芯片的 Mac，macOS 13.5 或更新版本。当前没有 Intel、Windows 或 Linux 安装包。
 
-> **签名公证仍待完成：** 当前应用**没有 Developer ID 签名或 Apple 公证**，Gatekeeper 拒绝运行，下载后的副本已出现“Apple 无法验证”提示。DMG 改善了安装形式，**不能消除该安全提示**。应用还没打开时，请先看下方[首次打开指引](#如果提示-apple-无法验证-openeval)。[验证情况与限制](docs/releases/v0.2.0-beta.11-r2.md)。
+> **签名公证仍待完成：** 当前应用**没有 Developer ID 签名或 Apple 公证**，Gatekeeper 拒绝运行，下载后的副本已出现“Apple 无法验证”提示。DMG 改善了安装形式，**不能消除该安全提示**。应用还没打开时，请先看下方[首次打开指引](#如果提示-apple-无法验证-openeval)。[验证情况与限制](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12)。
 
-你要下载的文件是 **`OpenEval-0.2.0-build11-r2-macos-arm64.dmg`**。里面已经包含 `OpenEval.app` 和 Node.js，无需自行编译或启动后台服务。Release 页里的 “Source code” 是开发用源码，不是 Mac 应用安装包。
+你要下载的文件是 **`OpenEval-0.2.0-build12-macos-arm64.dmg`**。里面已经包含 `OpenEval.app` 和 Node.js，无需自行编译或启动后台服务。Release 页里的 “Source code” 是开发用源码，不是 Mac 应用安装包。
 
 ## 快速开始
 
@@ -32,7 +32,7 @@
 
 如果提示 App 已损坏或会损坏电脑，或者是公司管理的 Mac 且策略不允许打开，请停止并联系管理员，或等待公证版。不要关闭 Gatekeeper、移除隔离标记或授予完全磁盘访问权限来处理这个提示。[Apple 官方说明](https://support.apple.com/zh-cn/102445)。
 
-预览版 build 12 起，在首次成功启动后也会展示这份指引，之后可从 **帮助 → macOS 首次打开指南** 重看。macOS 尚未允许启动时，应用内指引不会出现。
+打开 build 12 的 DMG 时，Finder 安装窗口会直接显示首次打开指引，旁边有双语「首次打开」说明。App 启动后不会再弹出这份说明。
 
 ### 2. 安装 Codex CLI 并登录一次
 
@@ -66,11 +66,11 @@ OpenEval 会复用这次登录，应用不要求填写 API key，也不采用仅
 <details>
 <summary>下载失败、安装受阻、校验文件与详细说明</summary>
 
-- **下载失败：** 打开 [r2 Release](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2)，选择文件名以 `macos-arm64.dmg` 结尾的安装包。
+- **下载失败：** 打开 [build 12 Release](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12)，选择文件名以 `macos-arm64.dmg` 结尾的安装包。
 - **macOS 提示无法验证：** 见[首次打开指引](#如果提示-apple-无法验证-openeval)。遇到损坏、恶意软件或管理员拦截时，不要继续。
 - **应用提示 Codex 不可用：** 在终端执行 `codex login status`，完成 ChatGPT 登录后重开 OpenEval。
 - **详细安装步骤：** [中文安装说明](docs/beta-install.zh-CN.md) · [English guide](docs/beta-install.en.md)。
-- **安装包校验与边界：** [Release 和 SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) · [版本验证与已知限制](docs/releases/v0.2.0-beta.11-r2.md)。
+- **安装包校验与边界：** [Release 和 SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12) · [版本验证与已知限制](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.12)。
 
 </details>
 
