@@ -18,7 +18,8 @@ export interface TaskContract {
  assumptions:string[]; openQuestions:string[]; deliverables:string[]; allowedActions:string[];
  finalPrompt:string; skillVersionIds?:string[]; goalMode?:GoalMode|null; createdAt:string;
 }
-export interface Run { id:string; taskId:string; contractId:string; status:RunStatus; model:string|null; effort:string|null; threadId:string|null; turnId:string|null; error:string|null; createdAt:string; updatedAt:string; goalMode?:GoalMode|null; goalState?:Record<string,unknown>|null; turnCount?:number; stopReason?:string; validationStatus?:'not_checked'|'passed'|'failed' }
+import type { PermissionMode } from './permissions.ts';
+export interface Run { id:string; taskId:string; contractId:string; status:RunStatus; model:string|null; effort:string|null; permissionMode?:PermissionMode; threadId:string|null; turnId:string|null; error:string|null; createdAt:string; updatedAt:string; goalMode?:GoalMode|null; goalState?:Record<string,unknown>|null; turnCount?:number; stopReason?:string; validationStatus?:'not_checked'|'passed'|'failed' }
 export interface RunEvent { id:number; taskId:string; runId:string; kind:string; data:Record<string,unknown>; createdAt:string }
 export interface Memory { id:string; projectId:string|null; scope:'user'|'project'; content:string; source:string; active:boolean; revision:number; createdAt:string; updatedAt:string }
 export interface Artifact { id:string; taskId:string; runId:string; name:string; mime:string; byteSize:number; hash:string; createdAt:string; url:string; title?:string; kind?:ResourceKind; resourceId?:string; versionId?:string; version?:number; registrationStatus?:'registered'|'unregistered'|'failed'; registrationError?:string|null }

@@ -1,3 +1,4 @@
+import type { PermissionMode } from '../../../shared/permissions';
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowUp, Check, ChevronDown, CircleHelp, FileText, LoaderCircle, RotateCcw, ShieldCheck, Square } from 'lucide-react';
 import type { Artifact, Capabilities, Intent, Resource, ResourceRef, Task, RunActivity, GoalMode, GoalState, RunEvent } from '../contract';
@@ -16,8 +17,9 @@ const starts: { intent: Intent; prompt: string }[] = [
   { intent: 'analyze', prompt: '分析我引用的已有评分结果，保留原始分数和统计口径，不新增评分。' },
   { intent: 'report', prompt: '根据已有评测结果撰写报告，沿用我引用的报告模板。' },
 ];
-export function Workspace({ task, resources, capabilities, input, setInput, onIntent, onReference, onRemoveRef, onInspect, onSend, onCancel, onResume, onApproval, onInputAnswer, run, onArtifact, onImport, model, setModel, reasoning, setReasoning, onRuntime, creating, goalMode, setGoalMode }: {
-  goalMode?: GoalMode | null; setGoalMode: (mode: GoalMode | null) => void;
+export function Workspace({ task, resources, capabilities, input, setInput, onIntent, onReference, onRemoveRef, onInspect, onSend, onCancel, onResume, onApproval, onInputAnswer, run, onArtifact, onImport, model, setModel, reasoning, setReasoning, onRuntime, creating, goalMode, setGoalMode, onGoalToggle, permission, setPermission }: {
+  goalMode?: GoalMode | null; setGoalMode: (mode: GoalMode | null) => void; onGoalToggle: (mode: GoalMode | null) => void;
+  permission: PermissionMode; setPermission: (mode: PermissionMode) => void;
   task: Task; resources: Resource[]; capabilities?: Capabilities; input: string; setInput: (v: string) => void; onIntent: (v: Intent) => void;
   onReference: (v: ResourceRef) => void; onRemoveRef: (v: ResourceRef) => void; onInspect: (v: ResourceRef) => void;
   onSend: () => void; onCancel: () => void; onResume: () => void; onApproval: (approved: boolean) => void; onInputAnswer: (answers: Record<string, { answers: string[] }>) => void;
@@ -59,8 +61,8 @@ export function Workspace({ task, resources, capabilities, input, setInput, onIn
         {task.refs.length > 0 && <ReferenceGroup key={task.id} references={task.refs} resources={resources} onInspect={onInspect} onRemove={busy?undefined:onRemoveRef} composer/>}
         {picker && <ReferencePicker resources={resources} selected={task.refs} onSelect={onReference} onClose={() => { setPicker(false); setInput(input.replace(/@$/, '')); textarea.current?.focus(); }} />}
         <textarea ref={textarea} value={input} onChange={e => { setInput(e.target.value); if (e.target.value.endsWith('@')) setPicker(true); }} placeholder="你想评测什么？" aria-label="任务输入" disabled={busy || creating} onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && !picker) { e.preventDefault(); if (canSend && !busy) onSend(); } }} />
-        <GoalInput value={goalMode} onChange={setGoalMode} disabled={busy || creating}/>
-        <div className="composer-toolbar"><ComposerControls key={task.id} capabilities={capabilities} disabled={busy || creating} model={model} reasoning={reasoning} intent={task.intent} goal={goalMode} onModel={setModel} onReasoning={setReasoning} onIntent={onIntent} onGoal={setGoalMode} onImport={onImport} onReference={() => setPicker(true)} onRuntime={onRuntime}/><div className="toolbar-right">{run.status === 'disconnected' ? <button className="send-button" onClick={onResume} aria-label="恢复事件连接"><RotateCcw size={15}/></button> : busy ? <button className="send-button stop" onClick={onCancel} aria-label="停止执行"><Square size={14} fill="currentColor" /></button> : <button className="send-button" onClick={onSend} disabled={!canSend} aria-label="发送任务">{creating ? <LoaderCircle className="spin" size={18} /> : <ArrowUp size={20} />}</button>}</div></div>
+        <GoalInput value={goalMode} onChange={mode => mode ? setGoalMode(mode) : onGoalToggle(null)} disabled={busy || creating}/>
+        <div className="composer-toolbar"><ComposerControls key={task.id} capabilities={capabilities} disabled={busy || creating} model={model} reasoning={reasoning} intent={task.intent} goal={goalMode} permission={permission} onPermission={setPermission} onModel={setModel} onReasoning={setReasoning} onIntent={onIntent} onGoal={onGoalToggle} onImport={onImport} onReference={() => setPicker(true)} onRuntime={onRuntime}/><div className="toolbar-right">{run.status === 'disconnected' ? <button className="send-button" onClick={onResume} aria-label="恢复事件连接"><RotateCcw size={15}/></button> : busy ? <button className="send-button stop" onClick={onCancel} aria-label="停止执行"><Square size={14} fill="currentColor" /></button> : <button className="send-button" onClick={onSend} disabled={!canSend} aria-label="发送任务">{creating ? <LoaderCircle className="spin" size={18} /> : <ArrowUp size={20} />}</button>}</div></div>
       </div><div className="composer-context"><FileText size={12} /><span>{task.refs.length ? `${task.refs.length} 份引用 · 版本已选定` : '当前工作区'}</span><span>Enter 发送</span></div></div>
       {empty && <div className="example-area"><button className="example-toggle" onClick={() => setExamples(!examples)}>试试一个示例 <ChevronDown size={12} className={examples ? 'rotated' : ''} /></button>{examples && <div className="example-menu">{starts.map(s => <button key={s.intent} onClick={() => { onIntent(s.intent); setInput(s.prompt); setExamples(false); textarea.current?.focus(); }}>{intentLabels[s.intent]}<span>{s.prompt}</span></button>)}</div>}</div>}
     </div>

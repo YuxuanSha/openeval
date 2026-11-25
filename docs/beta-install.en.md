@@ -6,10 +6,10 @@ This local desktop build is for **Apple Silicon, macOS 13.5 or later**. Revision
 
 1. [Download the Apple Silicon DMG](https://github.com/YuxuanSha/openeval/releases/download/v0.2.0-beta.11-r2/OpenEval-0.2.0-build11-r2-macos-arm64.dmg). Verify it against the Release `SHA256SUMS.txt` if needed. Source-code ZIPs are not the app installer.
 2. Double-click the DMG. Drag **OpenEval** onto **Applications** in its window. Quit and retain any existing version first; do not merge app bundles.
-3. Eject **OpenEval Installer**, then open OpenEval from Applications. If macOS blocks it, stop and wait for a signed/notarized build. The DMG does not resolve this beta’s signing limitation.
+3. Eject **OpenEval Installer**, then open OpenEval from Applications. If Apple says it cannot verify OpenEval, see the [first-open instructions](https://github.com/YuxuanSha/openeval/blob/main/README.md#if-apple-cannot-verify-openeval). The DMG does not resolve this beta’s signing limitation.
 4. For model tasks, install Codex CLI using [OpenAI’s instructions](https://learn.chatgpt.com/docs/cli), run `codex login` and `codex login status`, then reopen OpenEval. Use your own ChatGPT account. An API-key-only login is not used; local browsing/import does not perform model inference.
 
-**The app has an ad-hoc signature, not a Developer ID signature, and is not notarized.** Gatekeeper assessment rejects it; a downloaded r1 copy has shown Apple’s verification warning. r2 preserves the same application bytes and has no new signing or notarization. A matching checksum is not notarization. If macOS blocks the app, retain the exact message and contact the maintainer or wait for a signed/notarized build. Do not disable Gatekeeper, strip quarantine flags or grant Full Disk Access to work around it.
+**The app has an ad-hoc signature, not a Developer ID signature, and is not notarized.** Gatekeeper assessment rejects it; a downloaded r1 copy has shown Apple’s verification warning. r2 preserves the same application bytes and has no new signing or notarization. A matching checksum is not notarization. If the warning says the app is damaged or harmful, or a managed Mac blocks the app, stop, retain the exact message, and contact the administrator or wait for a signed/notarized build. Do not disable Gatekeeper, strip quarantine flags or grant Full Disk Access to work around it.
 
 ## Data and shutdown
 
@@ -27,3 +27,11 @@ The backend binds only to `127.0.0.1:4318`. Port or workspace conflicts are repo
 - Same-Mac isolation checks do not establish clean-Mac or downloaded/quarantined Gatekeeper compatibility. See [r2 validation](releases/v0.2.0-beta.11-r2.md) for tested and untested cases. macOS 13.5 is the runtime's declared minimum, not a tested machine in this release.
 
 OpenEval's original code uses MIT. Third-party terms and OpenDesign provenance remain under `Contents/Resources/runtime/`; Node's complete license and byte hashes are in `Contents/Resources/Node-LICENSE.txt` and `node-provenance.json`. No user data, account credentials or private evaluation history is included.
+
+## Execution permissions and defaults
+
+These controls are available in preview build 12 and newer, not in the build 11 DMG linked above.
+
+Below the task composer, choose **Ask for approval**, **Approve for me**, or **Full access**. Ask for approval is the initial default. Approve for me retains the workspace sandbox and routes eligible requests to Codex automatic review; some actions may still prompt. Full access removes the workspace sandbox and per-action approval prompts. Use it only for trusted tasks; selecting it requires explicit confirmation. Codex, macOS, and managed organization restrictions still apply. OpenEval stops rather than silently running under a different mode if Codex does not honor the selection.
+
+The permission selection, task mode, Goal toggle, model and per-model reasoning effort become defaults for future use. The goal text belongs to the current task, not to future tasks.

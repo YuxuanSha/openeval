@@ -34,7 +34,9 @@ export interface TaskContract {
   compiledPrompt?: string; goalMode?: GoalMode | null;
   skills?: ResourceRef[];
 }
+import type { PermissionMode } from '../../shared/permissions';
 export interface RunRequest {
+  permissionMode?: PermissionMode;
   taskId: string; original: string; intent: Intent; refs: ResourceRef[];
   model?: string; reasoning?: string; goalMode?: GoalMode | null; template?: ResourceRef;
   /** Demo-only scenario control; never forward as a live scoring instruction. */

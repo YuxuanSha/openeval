@@ -13,6 +13,12 @@ import { projectMessageParts } from './message-parts.ts';
 
 import { PACKAGE_ROOT as ROOT, PACKAGE_VERSION as VERSION } from './package-root.ts';
 const json=(res:any,status:number,value:any)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(value));};
+function validatePermissionRequest(req:any,input:any,host:string) {
+  if(input?.permissionMode!=='auto'&&input?.permissionMode!=='full')return;
+  if(req.headers.origin!==`http://${host}`||!/^application\/json(?:;|$)/i.test(req.headers['content-type']??'')) {
+    throw new AppError(403,'PERMISSION_ORIGIN_REQUIRED','请在本机 OpenEval 工作台明确选择此权限，不能从外部页面或旧版客户端提交。');
+  }
+}
 async function body(req:any){let length=0;const parts:Buffer[]=[];for await(const part of req){length+=part.length;if(length>56*1024*1024)throw new AppError(413,'BODY_SIZE','请求过大');parts.push(part);}try{return JSON.parse(Buffer.concat(parts).toString()||'{}');}catch{throw new AppError(400,'INVALID_JSON','请求格式无效');}}
 const summary=(v:any)=>({...v,text:v.text.slice(0,1400),textTruncated:v.text.length>1400});
 export function createApp(dataDir=join(ROOT,'.openeval'),options:{fetchLink?:typeof fetchLink,privateExamples?:boolean}={}) {
@@ -36,7 +42,7 @@ export function createApp(dataDir=join(ROOT,'.openeval'),options:{fetchLink?:typ
       }
       let match=path.match(/^\/api\/tasks\/([^/]+)(?:\/(messages|events))?$/);
       if(match){const task=store.get('tasks',match[1]);
-        if(match[2]==='messages'&&method==='POST')return json(res,202,runtime.submit(task.id,await body(req)));
+        if(match[2]==='messages'&&method==='POST'){const input=await body(req);validatePermissionRequest(req,input,host);return json(res,202,runtime.submit(task.id,input));}
         if(match[2]==='events'&&method==='GET'){
           let after=Number(url.searchParams.get('after')??req.headers['last-event-id']??0);if(!Number.isSafeInteger(after)||after<0)after=0;
           res.writeHead(200,{'Content-Type':'text/event-stream','Cache-Control':'no-cache','Connection':'keep-alive'});const send=(event:any)=>{if(event.taskId===task.id&&event.id>after){res.write(`id: ${event.id}\nevent: event\ndata: ${JSON.stringify(event)}\n\n`);after=event.id;}};
@@ -57,7 +63,7 @@ export function createApp(dataDir=join(ROOT,'.openeval'),options:{fetchLink?:typ
         res.writeHead(200,{'Content-Type':'application/json; charset=utf-8','Content-Disposition':`attachment; filename="trace-${encodeURIComponent(run.id)}.json"`,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
         res.end(JSON.stringify({runId:run.id,status:run.status,events},null,2));return;
       }
-      match=path.match(/^\/api\/runs\/([^/]+)\/(cancel|retry)$/);if(match&&method==='POST'){const input=await body(req);return json(res,match[2]==='retry'?202:200,match[2]==='retry'?runtime.retry(match[1],input):await runtime.cancel(match[1]));}
+      match=path.match(/^\/api\/runs\/([^/]+)\/(cancel|retry)$/);if(match&&method==='POST'){const input=await body(req);if(match[2]==='retry')validatePermissionRequest(req,input,host);return json(res,match[2]==='retry'?202:200,match[2]==='retry'?runtime.retry(match[1],input):await runtime.cancel(match[1]));}
       match=path.match(/^\/api\/requests\/([^/]+)\/respond$/);if(match&&method==='POST')return json(res,200,runtime.respond(match[1],await body(req)));
       if((path==='/api/resources'||path==='/api/search'||path==='/api/skills')&&method==='GET'){const rows=resources(store,url.searchParams.get('projectId')??'default',url.searchParams.get('q')??'',path==='/api/skills'?'skill':url.searchParams.get('kind')??undefined).map(summary);return json(res,200,path==='/api/skills'?{skills:rows}:{resources:rows});}
       if(path==='/api/resources'&&method==='POST')return json(res,201,addVersion(store,await body(req)));

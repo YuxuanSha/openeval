@@ -110,10 +110,10 @@ export class HttpAdapter implements EvalAdapter {
     let taskId = this.taskIds.get(request.taskId);
     if (!taskId) throw new Error('会话尚未加载或创建，请先打开有效任务后发送。');
     // Retain the idempotency key on an uncertain POST; replaying the SSE never repeats execution.
-    const key = `${taskId}:${request.original}:${JSON.stringify(request.refs)}:${request.intent}:${request.model || ''}:${request.reasoning || ''}:${JSON.stringify(request.goalMode || null)}`;
+    const key = `${taskId}:${request.original}:${JSON.stringify(request.refs)}:${request.intent}:${request.model || ''}:${request.reasoning || ''}:${request.permissionMode || 'ask'}:${JSON.stringify(request.goalMode || null)}`;
     const requestId = this.pendingSubmissions.get(key) || crypto.randomUUID(); this.pending(key, requestId);
     const refs = request.refs.map(ref => { const version = this.versions.get(ref.snapshotId); if (!version) throw new Error('引用版本尚未加载，请重新打开资料库后选择。'); return { versionId: ref.snapshotId, hash: version.hash }; });
-    const result = await this.request<Submission>(`/tasks/${encodeURIComponent(taskId)}/messages`, { text: request.original, intent: request.intent, refs, model: request.model, effort: request.reasoning, goalMode: request.goalMode, requestId });
+    const result = await this.request<Submission>(`/tasks/${encodeURIComponent(taskId)}/messages`, { text: request.original, intent: request.intent, refs, model: request.model, effort: request.reasoning, permissionMode: request.permissionMode, goalMode: request.goalMode, requestId });
     this.pending(key); this.runs.set(result.run.id, taskId);
     yield { type: 'started', runId: result.run.id, taskId, model: result.run.model || undefined, reasoning: result.run.effort || undefined, createdAt: result.run.createdAt };
     yield { type: 'contract', contract: await this.contract(result.contract) };

@@ -33,6 +33,12 @@ text and simple arrow geometry. It explains dragging the app into Applications;
 it makes no signing, notarization or successful-installation claim. System fonts
 were rasterized for the image; no font file is distributed.
 
+`dmg-first-open.png` is the 720 × 550 Finder background for the updated disk
+image. It keeps the drag-to-Applications instruction above the application and
+shortcut icons, and puts first-launch safety guidance alongside the bilingual
+text file. It uses project-authored text and geometry with rasterized macOS
+system fonts; no font or external image files are bundled.
+
 The README uses `<picture>` to select the mobile composition at narrow widths and includes text alternatives. No Chinese interface screenshots are distributed in this image set; the original development screenshots remain unchanged outside this package.
 
 Image copy should remain distinct from current validation status and license terms. Do not add score claims, CI badges, an MIT badge, or an assertion of a public release before those facts are established.

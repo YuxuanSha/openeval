@@ -8,7 +8,7 @@ case "$output" in /*.dmg) ;; *) echo 'Expected an absolute .dmg output path' >&2
 if [ -e "$output" ]; then echo 'Refusing to overwrite an existing disk image' >&2; exit 1; fi
 /usr/bin/codesign --verify --deep --strict "$app"
 python_bin="${OPENEVAL_DMG_PYTHON:-python3}"
-"$python_bin" -m dmgbuild -s scripts/dmg-settings.py -D "app=$app" -D "background=$PWD/docs/images/dmg-background.png" 'OpenEval Installer' "$output"
+"$python_bin" -m dmgbuild -s scripts/dmg-settings.py -D "app=$app" -D "background=$PWD/docs/images/dmg-first-open.png" -D "guide=$PWD/docs/首次打开 - Start Here.txt" 'OpenEval Installer' "$output"
 /usr/bin/hdiutil verify "$output"
 echo 'Disk image created. This does not sign or notarize the application.'
 echo 'A successful local build is not downloaded-app Gatekeeper acceptance.'

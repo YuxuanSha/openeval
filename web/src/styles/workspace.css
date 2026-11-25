@@ -22,3 +22,12 @@
 /* Inline process controls leave the conversation viewport available. */
 .conversation-scroll{overflow-anchor:none;scroll-behavior:auto}.message[hidden]{display:none}.conversation-status{display:flex;justify-content:center;flex-shrink:0;padding:5px 14px 0;min-width:0}.conversation-status button{font-size:11px;min-height:32px;padding:6px 12px;background:#f0f4ed;color:#536e47;border:1px solid #dce4d6;border-radius:8px}.reference-group{margin-top:12px}.reference-group>summary{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:11px;min-height:36px;color:#737373;list-style:none}.reference-group>summary::-webkit-details-marker{display:none}.reference-group>summary svg{transform:rotate(-90deg)}.reference-group[open]>summary svg{transform:none}.reference-group .message-refs{max-height:128px;overflow:auto;margin-top:4px}.composer-references{margin:8px 15px 0}.composer-references>summary{min-height:32px}.composer-references .selected-refs{padding:4px 0;max-height:96px}.notice.approval{max-height:240px;overflow:auto;overflow-wrap:anywhere}.notice.approval>div{min-width:0}.notice.approval strong{display:block;max-height:96px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}.input-request{max-height:280px;overflow:auto}.notice:focus-visible{outline:2px solid #68a855}.workspace:not(.is-empty) .composer>textarea{height:82px}.ref-chip button{min-width:0}.reference-group>summary:focus-visible{outline:2px solid #68a855;outline-offset:2px}
 @media(max-width:760px){.conversation-status button,.reference-group>summary{min-height:44px}.workspace:not(.is-empty) .composer-wrap{padding-top:8px;padding-bottom:8px}.workspace:not(.is-empty) .composer>textarea{height:64px}.notice.approval{max-height:40vh}.composer-references{margin:4px 10px 0}}
+
+.permission-menu {min-width:220px;max-width:min(270px,75vw)}
+.permission-menu button > span > small {display:block;white-space:normal;margin-top:3px}
+.permission-full {color:#9a4d10}
+@media(max-width:760px) {
+  .composer-controls {position:relative}
+  .permission-control {position:static}
+  .composer-controls .permission-menu {left:0;right:auto}
+}

@@ -1,0 +1,26 @@
+OpenEval｜安装与首次打开 / Install and first launch
+════════════════════════════════════════════════════
+
+1. 把 OpenEval 拖到 Applications（应用程序），然后推出安装盘。
+2. 从“应用程序”双击 OpenEval。这个测试版尚未取得 Apple 公证，macOS 可能提示“Apple 无法验证 OpenEval”。
+3. 若是自己管理的 Mac，且你确认安装包来自 OpenEval 官方发布、未被篡改，可以关闭提示，再前往：
+    → 系统设置 → 隐私与安全性 → 向下找到“安全性” → 点击“仍要打开”
+4. 按提示确认“打开”，必要时验证身份。“仍要打开”通常只在上次尝试打开后约一小时内出现，并且只对这个 App 设置例外。
+
+最稳妥的选择是等待签名公证版。若提示 App 已损坏、会损坏电脑，或公司的设备管理策略不允许打开，请停止并联系管理员，不要绕过安全设置。
+
+Apple 官方说明：https://support.apple.com/zh-cn/102445
+OpenEval 发布页：https://github.com/YuxuanSha/openeval/releases
+
+────────────────────────────────────────────────────
+
+1. Drag OpenEval into Applications and eject this installer disk.
+2. Open OpenEval from Applications. This beta is not Apple-notarized, so macOS may say it cannot verify OpenEval.
+3. On a Mac you manage, if you trust the official package and are sure it has not been tampered with, dismiss the alert. Then go to:
+   Apple menu → System Settings → Privacy & Security → Security → Open Anyway.
+4. Confirm Open and authenticate if prompted. Open Anyway is usually available for about an hour after the blocked attempt and applies only to this app.
+
+Waiting for a signed and notarized build is safest. If macOS says the app is damaged or will damage your computer, or if your organization blocks it, stop and contact your administrator. Do not bypass device security settings.
+
+Apple’s instructions: https://support.apple.com/en-us/102445
+OpenEval releases: https://github.com/YuxuanSha/openeval/releases

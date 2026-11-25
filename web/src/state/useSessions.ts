@@ -1,3 +1,4 @@
+import type { PermissionMode } from '../../../shared/permissions';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { adapter, isDemo } from '../adapters';
 import { upsertActivity, upsertPart, pendingState } from './trace';
@@ -7,9 +8,10 @@ import type { RunState } from '../components/Workspace';
 const blank = (): Task => ({ id: '', title: '新任务', intent: 'chat', messages: [], refs: [], artifacts: [] });
 const routeId = () => decodeURIComponent(location.pathname.match(/^\/tasks\/([^/]+)/)?.[1] || '');
 type Draft = { input: string; refs?: ResourceRef[]; intent?: Intent; goalMode?: GoalMode | null };
+const defaultGoal = (): GoalMode => ({objective:'',origin:'user'});
 const busyState = (state?: RunState) => !!state && ['running', 'approval', 'input', 'disconnected'].includes(state.status);
 /** Server sessions are canonical; browser storage contains unsent drafts only. */
-export function useSessions(onError: (message: string) => void) {
+export function useSessions(onError: (message: string) => void, defaultIntent: Intent, goalEnabled: boolean) {
   const [tasks, setTasks] = useState<Task[]>([]); const [active, setActive] = useState(routeId);
   const [creating, setCreating] = useState(false);
   const [states, setStates] = useState<Record<string, RunState>>({});
@@ -18,7 +20,8 @@ export function useSessions(onError: (message: string) => void) {
   const generations = useRef(new Map<string, number>());
   const createRequest = useRef<string | undefined>(undefined);
   const base = tasks.find(t => t.id === active) || blank(); const draft = drafts[active];
-  const current = { ...base, refs: draft?.refs ?? base.refs, intent: draft?.intent ?? base.intent };
+  const current = { ...base, refs: draft?.refs ?? base.refs, intent: draft?.intent ?? (base.messages.length ? base.intent : defaultIntent) };
+  const currentGoal = draft?.goalMode !== undefined ? draft.goalMode : !base.messages.length && goalEnabled ? defaultGoal() : undefined;
   const upsert = useCallback((task: Task) => setTasks(all => [task, ...all.filter(t => t.id !== task.id)]), []);
   const setState = (id: string, update: (s: RunState) => RunState) => setStates(all => ({ ...all, [id]: update(all[id] || { status: 'idle' }) }));
   const update = (fn: (t: Task) => Task, id = active) => id ? setTasks(all => all.map(t => t.id === id ? fn(t) : t)) : undefined;
@@ -34,7 +37,7 @@ export function useSessions(onError: (message: string) => void) {
   }, [upsert]);
   useEffect(() => { adapter.listTasks().then(loaded => setTasks(existing => [...new Map([...loaded, ...existing].map(t => [t.id, t])).values()])).catch(e => onError(e.message)); if (routeId()) load(routeId()).catch(e => onError(e.message)); const pop = () => { const id = routeId(); setActive(id); if (id && !controls.current.has(id)) load(id).catch(e => onError(e.message)); }; window.addEventListener('popstate', pop); return () => { window.removeEventListener('popstate', pop); controls.current.forEach(c => c.abort.abort()); }; }, [load, onError]);
   useEffect(() => { try { localStorage.setItem('openeval-drafts-v3', JSON.stringify(drafts)); } catch { /* Draft caching is optional; server tasks remain available. */ } }, [drafts]);
-  async function create(intent: Intent = 'chat') {
+  async function create(intent: Intent = defaultIntent) {
     if (creating) return;
     setCreating(true); createRequest.current ||= crypto.randomUUID();
     try { const t = await adapter.createTask(intent, createRequest.current, current.projectId); createRequest.current = undefined; upsert(t); navigate(t.id); return t; }
@@ -71,10 +74,10 @@ export function useSessions(onError: (message: string) => void) {
         return [{...task,messages:keepPending?[...task.messages,pending]:task.messages},...all.filter(t=>t.id!==id)];
       }); } catch (e) { onError((e as Error).message); } }
   }
-  async function send(model?: string, reasoning?: string) {
+  async function send(model?: string, reasoning?: string, permissionMode?: PermissionMode) {
     const original = (drafts[active]?.input || '').trim();
     // Old drafts may contain retired budget controls. Only the native objective is sent.
-    const draftGoal = drafts[active]?.goalMode;
+    const draftGoal = currentGoal;
     const goalMode: GoalMode | null = draftGoal ? { objective: draftGoal.objective.trim() || original, origin: 'user' } : null;
     if(goalMode && goalMode.objective.length>3500) return onError('目标最多 3500 字，请简要描述交付物和完成条件。');
     if (!original || busyState(states[active]) || creating || controls.current.has(active)) return;
@@ -85,7 +88,7 @@ export function useSessions(onError: (message: string) => void) {
     const control = { abort: new AbortController(), runId: '', assistant: crypto.randomUUID(), cancel: false, sourceId: active, goalMode, generation: (generations.current.get(t.id) || 0) + 1 }; generations.current.set(t.id, control.generation); controls.current.set(t.id, control);
     setDrafts(all => ({ ...all, [t.id]: { input: original, refs, intent, goalMode } })); setState(t.id, () => ({ status: 'running' }));
     update(task => ({ ...task, intent, refs, title: task.messages.length ? task.title : original.slice(0, 32), messages: [...task.messages, { id: crypto.randomUUID(), role: 'user', text: original }, { id: control.assistant, role: 'assistant', text: '' }] }), t.id);
-    await consume(adapter.run({ taskId: t.id, original, intent, refs, model, reasoning, goalMode }, control.abort.signal), t.id, control);
+    await consume(adapter.run({ taskId: t.id, original, intent, refs, model, reasoning, permissionMode, goalMode }, control.abort.signal), t.id, control);
   }
   async function resume() {
     const id = current.id; const last = current.lastRun; if (!id || !last || controls.current.has(id)) return;
@@ -100,5 +103,5 @@ export function useSessions(onError: (message: string) => void) {
   function setRefs(refs: ResourceRef[]) { if (busyState(states[active])) return; setDrafts(all => ({ ...all, [active]: { ...all[active], input: all[active]?.input || '', refs } })); }
   function setIntent(intent: Intent) { if (busyState(states[active])) return; setDrafts(all => ({ ...all, [active]: { ...all[active], input: all[active]?.input || '', intent } })); }
   function addRef(ref: ResourceRef) { if (busyState(states[active])) return onError('本次执行引用已固定；结束后可添加。'); setRefs(current.refs.some(r => r.snapshotId === ref.snapshotId) ? current.refs : [...current.refs, ref]); }
-  return { tasks, active, task: current, creating, create, select, navigate, update, addRef, setRefs, setIntent, send, resume, cancel, approval, answerInput, run: states[active] || { status: 'idle' } as RunState, goalMode: drafts[active]?.goalMode, setGoalMode: (goalMode: GoalMode | null) => setDrafts(all=>({...all,[active]:{...all[active],input:all[active]?.input || '',goalMode}})), input: drafts[active]?.input || '', setInput: (value: string) => setDrafts(all => ({ ...all, [active]: { ...all[active], input: value } })) };
+  return { tasks, active, task: current, creating, create, select, navigate, update, addRef, setRefs, setIntent, send, resume, cancel, approval, answerInput, run: states[active] || { status: 'idle' } as RunState, goalMode: currentGoal, setGoalMode: (goalMode: GoalMode | null) => setDrafts(all=>({...all,[active]:{...all[active],input:all[active]?.input || '',goalMode}})), input: drafts[active]?.input || '', setInput: (value: string) => setDrafts(all => ({ ...all, [active]: { ...all[active], input: value } })) };
 }

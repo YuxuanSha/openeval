@@ -12,7 +12,7 @@
 
 **Requires:** an Apple M-series Mac and macOS 13.5+. Intel, Windows, and Linux packages are not available.
 
-> **Signing is still pending:** this beta is **not Developer ID signed or Apple notarized**. Gatekeeper rejects it, and a downloaded copy has shown Apple’s verification warning. The DMG fixes the installation layout; **it does not fix that warning**. If blocked, stop and wait for a signed/notarized build. Do not disable security protections. [Current validation and limits](docs/releases/v0.2.0-beta.11-r2.md).
+> **Signing is still pending:** this beta is **not Developer ID signed or Apple notarized**. Gatekeeper rejects it, and a downloaded copy has shown Apple’s verification warning. The DMG fixes the installation layout; **it does not fix that warning**. The [first-open instructions](#if-apple-cannot-verify-openeval) are available here before the app runs. [Current validation and limits](docs/releases/v0.2.0-beta.11-r2.md).
 
 The file you need is **`OpenEval-0.2.0-build11-r2-macos-arm64.dmg`**. It includes `OpenEval.app` and Node.js; no build tools or manual backend startup are required. The “Source code” archives on the Release page are for developers, not the desktop app.
 
@@ -20,7 +20,19 @@ The file you need is **`OpenEval-0.2.0-build11-r2-macos-arm64.dmg`**. It include
 
 ### 1. Open the DMG and drag the app into Applications
 
-Download the DMG above and double-click it. In the installer window, drag **OpenEval** onto **Applications**. Eject **OpenEval Installer**, then open OpenEval from Applications. If you have an older copy, quit and retain it before replacing it; do not merge app bundles. If macOS shows a security block, stop at that point—the steps below do not override it.
+Download the DMG above and double-click it. In the installer window, drag **OpenEval** onto **Applications**. Eject **OpenEval Installer**, then open OpenEval from Applications. If you have an older copy, quit and retain it before replacing it; do not merge app bundles. If macOS says it cannot verify OpenEval, see the next section before continuing.
+
+### If Apple cannot verify OpenEval
+
+The safest option is to wait for a signed and notarized version. If you manage the Mac yourself and are sure the beta is from the official OpenEval release and has not been tampered with, macOS may allow an exception for this one app:
+
+1. Try to open **OpenEval** from **Applications**, then dismiss the alert.
+2. Go to **Apple menu → System Settings → Privacy & Security**, scroll to **Security**, then click **Open Anyway**.
+3. Confirm **Open** and authenticate if prompted. The button is usually available for about an hour after the blocked attempt.
+
+If macOS says the app is damaged or will damage your computer, or if **Open Anyway** is unavailable on a managed Mac, stop and contact your administrator or wait for a notarized build. Do not turn off Gatekeeper, remove quarantine attributes, or grant Full Disk Access to get past the warning. [Apple’s safe-opening instructions](https://support.apple.com/en-us/102445).
+
+In preview build 12 and newer, the desktop app also shows this guide after its first successful launch. Reopen it anytime via **Help (帮助) → macOS 首次打开指南**. The in-app guide cannot appear before macOS lets the app run.
 
 ### 2. Set up Codex CLI once
 
@@ -55,7 +67,7 @@ To evaluate your own material, import it, type **`@`** in the conversation to se
 <summary>Download troubleshooting, checksums, and detailed installation</summary>
 
 - **Download fails:** open the [r2 Release](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) and select the file ending in `macos-arm64.dmg`.
-- **macOS blocks the app:** this beta is not notarized; retain the exact message and contact the maintainer or wait for a signed build.
+- **macOS cannot verify the app:** see [the first-open instructions](#if-apple-cannot-verify-openeval). Stop if the warning says the app is damaged or harmful, or your administrator blocks it.
 - **Codex is unavailable:** run `codex login status` in Terminal, finish ChatGPT sign-in, then reopen OpenEval.
 - **Detailed installation:** [English guide](docs/beta-install.en.md) · [中文安装说明](docs/beta-install.zh-CN.md).
 - **Verify the DMG:** [Release and SHA256SUMS.txt](https://github.com/YuxuanSha/openeval/releases/tag/v0.2.0-beta.11-r2) · [validation and known limits](docs/releases/v0.2.0-beta.11-r2.md).
